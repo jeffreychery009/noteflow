@@ -1,7 +1,10 @@
 {
-    "semi": true,
-    "singleQuote": false,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "plugins": ["prettier-plugin-tailwindcss"]
-  }
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "printWidth": 80,
+  "tailwindAttributes": ["className", "tw", "clsx"],
+  "tailwindFunctions": ["clsx", "cn", "twMerge"]
+}
