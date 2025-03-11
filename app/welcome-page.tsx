@@ -26,6 +26,7 @@ import { useState, useEffect } from "react";
 import { FeatureCard } from "@/components/cards/FeatureCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ROUTES } from "@/routes";
 
 export default function WelcomePage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -68,14 +69,14 @@ export default function WelcomePage() {
             )}
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <Link href="/login">Log in</Link>
+            <Link href={ROUTES.SIGN_IN}>Log in</Link>
           </Button>
           <Button
             size="sm"
             className="border-none bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
             asChild
           >
-            <Link href="/signup">Sign up</Link>
+            <Link href={ROUTES.SIGN_UP}>Sign up</Link>
           </Button>
         </div>
       </header>
@@ -103,7 +104,7 @@ export default function WelcomePage() {
               src="/placeholder.svg?height=900&width=1200"
               alt="Noteflow app interface"
               fill
-              className="rounded-xl object-cover shadow-2xl"
+              className="rounded-xl object-cover shadow-2xl dark:invert"
               priority
             />
           </div>
@@ -193,7 +194,7 @@ export default function WelcomePage() {
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
             {/* Testimonial placeholders */}
             {[1, 2, 3].map((i) => (
               <Card
