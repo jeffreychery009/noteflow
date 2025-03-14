@@ -5,7 +5,7 @@ import { z } from "zod";
 export const SignUpSchema = z.object({
   email: z
     .string()
-    .email({ message: "Please enter a valid email" })
+    .email({ message: "Please enter a valid email address" })
     .min(1, { message: "Email is required" }),
 
   password: z
@@ -34,7 +34,7 @@ export const SignUpSchema = z.object({
 
   name: z
     .string()
-    .min(1, { message: "Name is required" })
+    .min(3, { message: "Name must be at least 3 characters" })
     .max(100, { message: "Name cannot exceed 100 characters" })
     .regex(/^[a-zA-Z\s]+$/, {
       message: "Name can only contain letters and spaces",
@@ -44,7 +44,7 @@ export const SignUpSchema = z.object({
 export const SignInSchema = z.object({
   email: z
     .string()
-    .email({ message: "Please provide a valid email address" })
+    .email({ message: "Please enter a valid email address" })
     .min(1, { message: "Email is required" }),
 
   password: z
@@ -52,4 +52,29 @@ export const SignInSchema = z.object({
     .min(1, { message: "Password is required" })
     .min(6, { message: "Password must be at least 6 characters" })
     .max(50, { message: "Password cannot exceed 50 characters" }),
+});
+
+export const userSchema = z.object({
+  email: z.string().email({ message: "Please provide a valid email address" }),
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters" })
+    .max(30, { message: "Username cannot exceed 30 characters" })
+    .regex(/^[a-zA-Z0-9_]+$/, {
+      message: "Username can only contain letters, numbers, and underscores",
+    }),
+  name: z.string().min(1, { message: "Name is required" }),
+  avatar: z
+    .string()
+    .url({ message: "Please provide a valid avatar URL" })
+    .optional(),
+  preferences: z
+    .object({
+      theme: z.enum(["light", "dark"]).default("light"),
+      syncMode: z.enum(["online", "offline", "hybrid"]).default("online"),
+    })
+    .default({
+      theme: "light",
+      syncMode: "online",
+    }),
 });
