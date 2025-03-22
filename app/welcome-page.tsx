@@ -1,287 +1,121 @@
-"use client";
-
-import {
-  Pen,
-  Sparkles,
-  Cloud,
-  Users,
-  Moon,
-  Sun,
-  ArrowRight,
-  MessageSquare,
-  Zap,
-  Check,
-  MessageCircle,
-  Share2,
-  History,
-  Search,
-  Tags,
-  FolderTree,
-} from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, Flame } from "lucide-react";
 import Link from "next/link";
-import type React from "react";
-import { useState, useEffect } from "react";
 
-import { FeatureCard } from "@/components/cards/FeatureCard";
+import { CTASection } from "@/components/homepage/cta-section";
+import { FeatureSection } from "@/components/homepage/feature-section";
+import { Footer } from "@/components/homepage/footer";
+import { TestimonialSection } from "@/components/homepage/testimonial-section";
+import { ThemeToggle } from "@/components/toggles/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ROUTES } from "@/routes";
 
-export default function WelcomePage() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Check system preference on initial load
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDarkMode(isDark);
-      if (isDark) {
-        document.documentElement.classList.add("dark");
-      }
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-gray-900 transition-colors duration-200 dark:bg-[#121212] dark:text-gray-100">
-      {/* Header */}
-      <header className="container mx-auto flex items-center justify-between px-4 py-6">
-        <div className="flex items-center gap-3">
-          <Pen className="size-6 text-primary" />
-          <span className="text-xl font-bold">Noteflow</span>
+    <div className="flex min-h-screen flex-col">
+      <header className="container flex h-16 items-center justify-between py-4">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center">
+            <span className="text-2xl font-bold">n.</span>
+          </Link>
+          <nav className="hidden gap-6 md:flex">
+            <Link
+              href="#features"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+            >
+              Features
+            </Link>
+            <Link
+              href="#download"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+            >
+              Download
+            </Link>
+            <Link
+              href="#resources"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+            >
+              Resources
+            </Link>
+            <Link
+              href="#company"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+            >
+              Company
+            </Link>
+          </nav>
         </div>
-        <div className="flex items-center gap-5">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleDarkMode}
-            className="size-10 rounded-full p-0"
-          >
-            {isDarkMode ? (
-              <Sun className="size-5" />
-            ) : (
-              <Moon className="size-5" />
-            )}
-          </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <Link href={ROUTES.SIGN_IN}>Log in</Link>
-          </Button>
-          <Button
-            size="sm"
-            className="border-none bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
-            asChild
-          >
-            <Link href={ROUTES.SIGN_UP}>Sign up</Link>
-          </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button className="rounded-full">Sign in</Button>
         </div>
       </header>
-
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
-        <div className="flex flex-col items-center gap-12 lg:flex-row">
-          <div className="flex-1 text-center lg:text-left">
-            <h1 className="mb-6 text-4xl font-semibold md:text-5xl lg:text-6xl">
-              Take Notes in Real Time with AI Assistance
+      <main className="flex-1">
+        <section className="container flex flex-col items-center justify-center py-12 text-center md:py-24">
+          <div className="mb-8 inline-flex items-center rounded-full border bg-muted/50 px-4 py-1.5 dark:bg-muted/20">
+            <div className="flex items-center justify-center rounded-full bg-orange-100 p-1 text-orange-600 dark:bg-orange-900/60 dark:text-orange-300">
+              <Flame className="size-4" />
+            </div>
+            <span className="ml-2 text-sm font-medium">
+              See what&apos;s new
+            </span>
+            <ArrowRight className="ml-2 size-4" />
+          </div>
+          <div className="max-w-3xl space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              The simplest way
+              <br />
+              to keep notes
             </h1>
-            <p className="mb-8 text-xl font-extralight text-gray-600 md:text-2xl dark:text-gray-300">
-              Collaborate seamlessly with your team while AI helps you capture
-              and organize your thoughts
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+              All your notes, synced on all your devices. Get Nulis now for
+              <br />
+              iOS, Mac, or in your browser.
             </p>
-            <Button
-              size="lg"
-              className="border-none bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
-            >
-              Get Started <ArrowRight className="size-4" />
+          </div>
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <Button size="lg" className="rounded-full px-8">
+              Download Nulis
+            </Button>
+            <Button size="lg" variant="outline" className="rounded-full px-8">
+              Open in Browser
             </Button>
           </div>
-          <div className="relative aspect-[4/3] w-full max-w-2xl flex-1">
-            <Image
-              src="/placeholder.svg?height=900&width=1200"
-              alt="Noteflow app interface"
-              fill
-              className="rounded-xl object-cover shadow-2xl dark:invert"
-              priority
-            />
+          <div className="mt-16 w-full max-w-5xl">
+            <div className="flex aspect-[16/9] w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-900">
+              <div className="px-6 py-10 text-center">
+                <div className="mx-auto size-12 text-gray-400 dark:text-gray-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
+                  Hero Image Placeholder
+                </h3>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  Add your app screenshot or hero image here
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-      {/* Features Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
-        <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
-          <FeatureCard
-            title="Smart Writing"
-            description="Get AI-powered assistance that helps you write better, faster, and more effectively while maintaining your unique voice."
-            features={[
-              {
-                icon: <Sparkles className="size-5" />,
-                text: "AI-powered suggestions",
-              },
-              {
-                icon: <MessageSquare className="size-5" />,
-                text: "Writing assistance",
-              },
-              {
-                icon: <Zap className="size-5" />,
-                text: "Quick formatting",
-              },
-              {
-                icon: <Check className="size-5" />,
-                text: "Grammar checking",
-              },
-            ]}
-          />
-          <FeatureCard
-            title="Seamless Collaboration"
-            description="Work together with your team in real-time. Share, edit, and comment on notes with instant synchronization across all devices."
-            features={[
-              {
-                icon: <Users className="size-5" />,
-                text: "Real-time editing",
-              },
-              {
-                icon: <MessageCircle className="size-5" />,
-                text: "Inline comments",
-              },
-              {
-                icon: <Share2 className="size-5" />,
-                text: "Easy sharing",
-              },
-              {
-                icon: <History className="size-5" />,
-                text: "Version history",
-              },
-            ]}
-          />
-          <FeatureCard
-            title="Powerful Organization"
-            description="Keep your notes organized with powerful tools. Use tags, folders, and smart search to find anything instantly."
-            features={[
-              {
-                icon: <Search className="size-5" />,
-                text: "Smart search",
-              },
-              {
-                icon: <Tags className="size-5" />,
-                text: "Custom tags",
-              },
-              {
-                icon: <FolderTree className="size-5" />,
-                text: "Nested folders",
-              },
-              {
-                icon: <Cloud className="size-5" />,
-                text: "Cloud sync",
-              },
-            ]}
-          />
-        </div>
-      </section>
-      {/* Testimonials Section */}
-      <section className="bg-white py-20 md:py-32 dark:bg-[#1A1A1A]">
-        <div className="container mx-auto px-4">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-semibold md:text-4xl">
-              What Our Users Say
-            </h2>
-            <p className="mx-auto max-w-2xl text-xl font-light text-gray-600 dark:text-gray-400">
-              Join thousands of satisfied users who have transformed their
-              note-taking experience
-            </p>
-          </div>
+        </section>
 
-          <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
-            {/* Testimonial placeholders */}
-            {[1, 2, 3].map((i) => (
-              <Card
-                key={i}
-                className="border border-transparent bg-white dark:border-[#C8CBD9] dark:border-opacity-30 dark:bg-[#2A2A2A]"
-              >
-                <CardContent className="p-6">
-                  <div className="mb-4 flex items-center gap-4">
-                    <div className="size-12 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                    <div>
-                      <h4 className="font-semibold">User Name</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Position, Company
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    &quot;Noteflow has completely transformed how I organize my
-                    thoughts and collaborate with my team. The AI features are
-                    incredibly helpful!&quot;
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
-        <div className="rounded-2xl p-8 text-center text-black shadow-md md:p-12 dark:border-opacity-30 dark:bg-[#2A2A2A] dark:text-white dark:shadow-none">
-          <h2 className="mb-4 text-3xl font-semibold md:text-4xl">
-            Ready to Get Started?
-          </h2>
-          <p className="mx-auto mb-8 max-w-2xl text-xl font-light">
-            Join thousands of users and teams who are already enhancing their
-            productivity with Noteflow
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <div className="flex justify-center">
-              <Button
-                size="lg"
-                className="border-none bg-gradient-to-r from-[#7DC5ED] via-[#7DC5ED] to-[#12A7FB] text-white"
-                asChild
-              >
-                <Link href="/signup">
-                  Start for Free <ArrowRight className="size-5" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-12 dark:border-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-between md:flex-row">
-            <div className="mb-4 flex items-center gap-2 md:mb-0">
-              <Pen className="size-5 text-primary" />
-              <span className="font-bold">Noteflow</span>
-            </div>
-            <div className="flex gap-8">
-              <Link
-                href="/about"
-                className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
-              >
-                About
-              </Link>
-              <Link
-                href="/features"
-                className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
-              >
-                Features
-              </Link>
+        <FeatureSection />
 
-              <Link
-                href="/contact"
-                className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary"
-              >
-                Contact
-              </Link>
-            </div>
-          </div>
-          <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} Noteflow. All rights reserved.
-          </div>
-        </div>
-      </footer>
+        <TestimonialSection />
+
+        <CTASection />
+      </main>
+
+      <Footer />
     </div>
   );
 }
