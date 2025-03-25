@@ -7,6 +7,7 @@ import { Footer } from "@/components/homepage/footer";
 import { TestimonialSection } from "@/components/homepage/testimonial-section";
 import { ThemeToggle } from "@/components/toggles/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/routes";
 
 export default function Home() {
   return (
@@ -45,7 +46,9 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button className="rounded-full">Sign in</Button>
+          <Button className="rounded-full">
+            <Link href={ROUTES.SIGN_IN}>Sign in</Link>
+          </Button>
         </div>
       </header>
       <main className="flex-1">
