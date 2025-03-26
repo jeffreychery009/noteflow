@@ -20,12 +20,20 @@ const SocialAuthForm = () => {
   };
 
   return (
-    <div className="mt-4 flex flex-wrap gap-4">
-      <Button onClick={() => handleSignIn("github")}>
-        <span>Log in with Github</span>
+    <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
+      <Button
+        onClick={() => handleSignIn("github")}
+        variant="outline"
+        className="rounded-full"
+      >
+        <span className="font-normal">Log in with Github</span>
       </Button>
-      <Button onClick={() => handleSignIn("google")}>
-        <span>Log in with Google</span>
+      <Button
+        onClick={() => handleSignIn("google")}
+        variant="outline"
+        className="rounded-full"
+      >
+        <span className="font-normal">Log in with Google</span>
       </Button>
     </div>
   );
