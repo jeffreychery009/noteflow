@@ -5,6 +5,10 @@ export interface IUser extends Document {
   username: string;
   name: string;
   avatar?: string;
+  providers: Array<{
+    provider: string;
+    providerAccountId: string;
+  }>;
   createdAt: Date;
   updatedAt: Date;
   preferences: {
@@ -37,6 +41,18 @@ const userSchema: Schema<IUser> = new Schema(
     avatar: {
       type: String,
     },
+    providers: [
+      {
+        provider: {
+          type: String,
+          required: true,
+        },
+        providerAccountId: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     preferences: {
       theme: {
         type: String,

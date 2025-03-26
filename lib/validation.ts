@@ -78,3 +78,15 @@ export const userSchema = z.object({
       syncMode: "online",
     }),
 });
+
+export const accountProviderSchema = z.object({
+  provider: z.enum(["google", "github", "credentials"]),
+  providerAccountId: z.string(),
+  image: z.string().url().optional(),
+  name: z.string().optional(),
+  email: z.string().email(),
+  access_token: z.string().optional(),
+  expires_at: z.number().optional(),
+  refresh_token: z.string().optional(),
+  token_type: z.string().optional(),
+});
