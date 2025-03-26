@@ -1,5 +1,8 @@
+"use client";
+
 import { ArrowRight, Flame } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { CTASection } from "@/components/homepage/cta-section";
 import { FeatureSection } from "@/components/homepage/feature-section";
@@ -10,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/routes";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="container flex h-16 items-center justify-between py-4">
@@ -46,8 +51,11 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button className="rounded-full">
-            <Link href={ROUTES.SIGN_IN}>Sign in</Link>
+          <Button
+            className="rounded-full"
+            onClick={() => router.push(ROUTES.SIGN_IN)}
+          >
+            Sign in
           </Button>
         </div>
       </header>
