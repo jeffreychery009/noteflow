@@ -67,7 +67,18 @@ const AuthForm = <T extends FieldValues>({
                     required
                     type={field.name === "password" ? "password" : "text"}
                     {...field}
-                    className="w-full rounded-lg"
+                    className="w-full rounded-lg bg-gray-50 dark:bg-gray-800"
+                    placeholder={
+                      field.name === "email"
+                        ? "name@example.com"
+                        : field.name === "password"
+                          ? "********"
+                          : field.name === "name"
+                            ? "John Doe"
+                            : field.name === "username"
+                              ? "john_doe"
+                              : ""
+                    }
                   />
                 </FormControl>
 
@@ -77,7 +88,7 @@ const AuthForm = <T extends FieldValues>({
           />
         ))}
         <Button
-          className="w-full rounded-xl bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
+          className="w-full rounded-full bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
           type="submit"
           disabled={form.formState.isSubmitting}
         >
@@ -98,6 +109,16 @@ const AuthForm = <T extends FieldValues>({
           </p>
         )}
       </form>
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+            Or continue with
+          </span>
+        </div>
+      </div>
     </Form>
   );
 };
