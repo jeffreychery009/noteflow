@@ -71,4 +71,7 @@
   .text-primary {
     color: #2e58e1;
   }
+  .primary-gradient {
+    background: linear-gradient(to right, #12a7fb 0%, #7dc5ed 74%);
+  }
 }
