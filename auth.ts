@@ -99,8 +99,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })) as IUser & { _id: Types.ObjectId };
 
         if (dbUser) {
+          console.log("DB User:", {
+            avatar: dbUser.avatar,
+            sessionImage: session.user.image,
+          });
+
           session.user.id = dbUser._id.toString();
           session.user.providers = dbUser.providers;
+          session.user.image = dbUser.avatar || session.user.image;
+
+          console.log("Updated Session:", {
+            image: session.user.image,
+            name: session.user.name,
+          });
         }
 
         return session;
