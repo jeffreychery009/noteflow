@@ -9,6 +9,7 @@ declare module "next-auth" {
         provider: string;
         providerAccountId: string;
       }>;
+      avatar?: string;
     } & DefaultSession["user"];
   }
 
@@ -18,6 +19,7 @@ declare module "next-auth" {
       provider: string;
       providerAccountId: string;
     }>;
+    avatar?: string;
   }
 }
 
