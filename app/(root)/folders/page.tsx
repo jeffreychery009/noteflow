@@ -6,11 +6,7 @@ const Folders = async () => {
   const session = await auth();
   console.log(session);
 
-  return (
-    <div>
-      <Sidebar />
-    </div>
-  );
+  return <div>Folders</div>;
 };
 
 export default Folders;
