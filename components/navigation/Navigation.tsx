@@ -1,27 +1,60 @@
+"use client";
+
+import { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
-import { navLinks } from "@/constants/index";
+import { navLinks } from "@/constants";
+import { cn } from "@/lib/utils";
 
 import { ThemeToggle } from "../toggles/theme-toggle";
 import { Button } from "../ui/button";
 
-const Navigation = () => {
+interface NavLink {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+}
+
+interface NavSection {
+  subTitle: string;
+  links: NavLink[];
+}
+
+interface NavigationProps {
+  onNavigate?: () => void;
+}
+
+const Navigation = ({ onNavigate }: NavigationProps) => {
+  const pathname = usePathname();
+
   return (
-    <nav className="flex h-full flex-col justify-between">
+    <nav
+      className="flex h-full flex-col justify-between"
+      aria-label="Main navigation"
+    >
       <div className="flex-1 overflow-y-auto p-2">
-        {navLinks.map((link) => (
-          <div className="mb-4" key={link.subTitle}>
+        {navLinks.map((section) => (
+          <div className="mb-4" key={section.subTitle}>
             <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-              {link.subTitle}
+              {section.subTitle}
             </p>
-            <ul className="space-y-1">
-              {link.links.map((item) => (
+            <ul
+              className="space-y-1"
+              role="list"
+              aria-label={`${section.subTitle} navigation`}
+            >
+              {section.links.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>
-                    <Button variant="ghost" className="w-full justify-start">
+                  <Link href={item.href} onClick={onNavigate}>
+                    <Button
+                      variant={pathname === item.href ? "secondary" : "ghost"}
+                      className="w-full justify-start"
+                      aria-current={pathname === item.href ? "page" : undefined}
+                    >
                       <span className="mr-2 text-sm">
-                        {React.createElement(item.icon)}
+                        <item.icon aria-hidden="true" />
                       </span>
                       <span>{item.label}</span>
                     </Button>
