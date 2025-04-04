@@ -90,3 +90,8 @@ export const accountProviderSchema = z.object({
   refresh_token: z.string().optional(),
   token_type: z.string().optional(),
 });
+
+export const folderSchema = z.object({
+  title: z.string().min(1, { message: "Title is required" }),
+  sharedWith: z.array(z.string()).optional(),
+});
