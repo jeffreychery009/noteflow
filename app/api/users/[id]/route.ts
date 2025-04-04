@@ -15,18 +15,27 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-  if (!id) {
-    throw new Error("User ID was not found! Try again.");
-  }
-
   try {
     await connectToDatabase();
 
-    const user = await User.findById(id);
-    if (!user) throw new NotFoundError("User");
+    const { id } = await params;
+    if (!id) {
+      throw new NotFoundError("User ID");
+    }
 
-    return NextResponse.json({ success: true, data: user }, { status: 200 });
+    const user = await User.findById(id).populate({
+      path: "folders",
+      select: "title itemCount createdAt updatedAt",
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: user });
   } catch (error) {
     return handleError(error);
   }

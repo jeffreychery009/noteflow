@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
     await connectToDatabase();
 
     // Get all users
-    const users = await User.find();
+    const users = await User.find().populate("folders", "title");
 
     // If no users are found, throw an error
     if (!users) {
