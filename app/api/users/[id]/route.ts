@@ -52,6 +52,7 @@ export async function DELETE(
   }
 
   try {
+    // Connect to the database
     await connectToDatabase();
 
     const user = await User.findByIdAndDelete(id);
