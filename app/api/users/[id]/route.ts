@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import connectToDatabase from "@/lib/db/mongodb";
+import Folder from "@/lib/models/folder";
 import User from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
-import {
-  RequestError,
-  NotFoundError,
-  ValidationError,
-} from "@/lib/utils/http-errors";
+import { NotFoundError } from "@/lib/utils/http-errors";
 import { userSchema } from "@/lib/validation";
 
 // GET a single user by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Connect to database first
     await connectToDatabase();
 
     const { id } = await params;
     if (!id) {
-      throw new NotFoundError("User ID");
+      return NextResponse.json(
+        { success: false, message: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     const user = await User.findById(id).populate({
@@ -37,6 +38,7 @@ export async function GET(
 
     return NextResponse.json({ success: true, data: user });
   } catch (error) {
+    console.error("Error in user route:", error);
     return handleError(error);
   }
 }

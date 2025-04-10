@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 
 import connectToDatabase from "@/lib/db/mongodb";
+import Folder from "@/lib/models/folder";
 import User from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
 import {
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
     await connectToDatabase();
 
     // Get all users
-    const users = await User.find().populate("folders", "title");
+    const users = await User.find();
 
     // If no users are found, throw an error
     if (!users) {
