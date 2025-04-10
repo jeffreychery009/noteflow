@@ -74,4 +74,8 @@
   .primary-gradient {
     background: #12a7fb;
   }
+
+  .bgwhite_dark900 {
+    @apply border border-gray-900 bg-white dark:border-gray-800 dark:bg-gray-900;
+  }
 }
