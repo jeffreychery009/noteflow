@@ -73,3 +73,13 @@ export const navLinks = [
     ],
   },
 ];
+
+// Defining the colors for the folders
+export const folderColors = [
+  { value: "bg-blue-500", label: "Blue" },
+  { value: "bg-red-500", label: "Red" },
+  { value: "bg-green-500", label: "Green" },
+  { value: "bg-yellow-500", label: "Yellow" },
+  { value: "bg-purple-500", label: "Purple" },
+  { value: "bg-pink-500", label: "Pink" },
+];
