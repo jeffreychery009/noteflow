@@ -43,8 +43,8 @@ const FolderDialog = ({ isOpen, onSubmit }: FolderDialogProps) => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       onSubmit("");
-      setFolderName("");
-      setSelectedColor(folderColors[0].value);
+      setFolderName(""); // Reset folder name when dialog closes
+      setSelectedColor(folderColors[0].value); // Reset color selection
     }
   };
 
@@ -60,7 +60,7 @@ const FolderDialog = ({ isOpen, onSubmit }: FolderDialogProps) => {
 
     await createFolder(folderName, mutate, data, toast, setIsLoading);
     if (!isLoading) {
-      handleOpenChange(false);
+      handleOpenChange(false); // Close dialog after successful creation
     }
   };
 
