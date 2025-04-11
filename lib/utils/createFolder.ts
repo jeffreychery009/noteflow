@@ -7,34 +7,31 @@ export async function createFolder(
 ) {
   try {
     setIsLoading(true);
-    console.log("Initial data from SWR:", data);
+    console.log("Current data structure:", data); // Log current data
 
     // Optimistically update the UI
     const optimisticFolder = {
-      _id: Date.now().toString(),
+      _id: Date.now().toString(), // Temporary ID
       title,
       itemCount: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    // Get current folders array
-    const currentFolders = data?.data?.folders || [];
-    console.log("Current folders:", currentFolders);
-    console.log("Adding optimistic folder:", optimisticFolder);
-
-    // Create new data structure
-    const optimisticData = {
-      success: true,
-      data: {
-        ...data?.data,
-        folders: [...currentFolders, optimisticFolder],
-      },
-    };
-    console.log("New data structure:", optimisticData);
+    console.log("Optimistic folder:", optimisticFolder); // Log optimistic folder
 
     // Update the cache optimistically
-    await mutate(optimisticData, false);
+    await mutate(
+      "/api/folders",
+      {
+        success: true,
+        data: {
+          ...data?.data,
+          folders: [...(data?.data?.folders || []), optimisticFolder],
+        },
+      },
+      false
+    );
 
     // Make the actual API request
     const response = await fetch("/api/folders", {
@@ -43,8 +40,10 @@ export async function createFolder(
       headers: { "Content-Type": "application/json" },
     });
 
+    await mutate();
+
     const result = await response.json();
-    console.log("API response:", result);
+    console.log("API response:", result); // Log API response
 
     if (result.success) {
       // Update the cache with the real data
@@ -66,7 +65,7 @@ export async function createFolder(
       });
     }
   } catch (error) {
-    console.error("Error in createFolder:", error);
+    console.error(error);
     // Rollback on error
     await mutate(data, false);
     toast({
