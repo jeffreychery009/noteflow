@@ -1,10 +1,10 @@
-import { Calendar, Folder, MoreHorizontal } from "lucide-react";
+import { Calendar, Folder } from "lucide-react";
 import React from "react";
 
 import { formatDate } from "@/lib/formatDate";
 
+import DropdownOptions from "../dropdown/DropdownOptions";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
 
 const FolderCard = ({ folder }: { folder: any }) => {
   return (
@@ -21,9 +21,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="size-8">
-          <MoreHorizontal className="size-4" />
-        </Button>
+        <DropdownOptions />
       </div>
       <div className="mt-4 flex items-center justify-between">
         <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
@@ -33,7 +31,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
 
         {folder.sharedWith && (
           <div className="flex space-x-2">
-            {folder.sharedWith.map((user: any, index: number) => (
+            {folder.sharedWith.map((user: any) => (
               <Avatar
                 key={user.id}
                 className="size-6 border-2 border-white dark:border-gray-900"
