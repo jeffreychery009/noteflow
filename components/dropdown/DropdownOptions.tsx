@@ -1,17 +1,24 @@
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
 
-import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 
-const DropdownOptions = () => {
+interface DropdownOption {
+  title: string;
+  icon?: React.ReactNode;
+  onClick: () => void;
+}
+
+interface DropdownOptionsProps {
+  options: DropdownOption[];
+}
+
+const DropdownOptions = ({ options }: DropdownOptionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -24,12 +31,19 @@ const DropdownOptions = () => {
         <MoreHorizontal className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        {options.map((option, index) => (
+          <DropdownMenuItem
+            key={index}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              option.onClick();
+            }}
+          >
+            {option.icon && <span className="mr-2">{option.icon}</span>}
+            {option.title}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
