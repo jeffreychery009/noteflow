@@ -1,12 +1,64 @@
-import { Calendar, Folder } from "lucide-react";
+import { Calendar, Folder, Pencil, Pin, Share, Trash } from "lucide-react";
 import React from "react";
 
+import { useToast } from "@/hooks/use-toast";
+import { useDeleteFolder } from "@/hooks/useDeleteFolder";
 import { formatDate } from "@/lib/formatDate";
 
 import DropdownOptions from "../dropdown/DropdownOptions";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const FolderCard = ({ folder }: { folder: any }) => {
+  const { deleteFolder } = useDeleteFolder();
+  const { toast } = useToast();
+
+  const handleDelete = async () => {
+    try {
+      const success = await deleteFolder(folder._id);
+      if (success) {
+        toast({
+          title: "Success",
+          description: "Folder deleted successfully",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to delete folder",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete folder",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const options = [
+    {
+      title: "Edit",
+      icon: <Pencil className="size-4" />,
+      onClick: () => console.log("Edit clicked"),
+    },
+    {
+      title: "Share",
+      icon: <Share className="size-4" />,
+      onClick: () => console.log("Share clicked"),
+    },
+    {
+      title: "Pin",
+      icon: <Pin className="size-4" />,
+      onClick: () => console.log("Pin clicked"),
+    },
+    {
+      title: "Delete",
+      icon: <Trash className="size-4" />,
+      onClick: handleDelete,
+    },
+  ];
+
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
       <div className="flex items-start justify-between">
@@ -21,7 +73,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
             </p>
           </div>
         </div>
-        <DropdownOptions />
+        <DropdownOptions options={options} />
       </div>
       <div className="mt-4 flex items-center justify-between">
         <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
