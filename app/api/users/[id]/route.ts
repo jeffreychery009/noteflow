@@ -24,8 +24,12 @@ export async function GET(
       );
     }
 
+    // Ensure Folder model is registered before population
+    const FolderModel = Folder;
+
     const user = await User.findById(id).populate({
       path: "folders",
+      model: FolderModel,
       select: "title itemCount createdAt updatedAt",
     });
 
@@ -46,7 +50,7 @@ export async function GET(
 // Delete a user by ID
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   if (!id) {
@@ -72,7 +76,7 @@ export async function DELETE(
 // PUT Method to update a user by ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   if (!id) throw new NotFoundError("User ID");
