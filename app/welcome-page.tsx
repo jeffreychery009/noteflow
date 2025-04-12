@@ -51,12 +51,10 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button
-            className="rounded-full"
-            onClick={() => router.push(ROUTES.SIGN_IN)}
-          >
-            Sign in
-          </Button>
+
+          <Link href={ROUTES.SIGN_IN}>
+            <Button className="rounded-full">Sign in</Button>
+          </Link>
         </div>
       </header>
       <main className="flex-1">
