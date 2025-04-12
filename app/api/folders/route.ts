@@ -66,3 +66,47 @@ export async function GET() {
     return handleError(error);
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    await connectToDatabase();
+
+    const session = await auth();
+    if (!session?.user?.id) {
+      throw new ValidationError({ auth: ["Unauthorized"] });
+    }
+
+    const { id } = await request.json();
+
+    const folder = await Folder.findById(id);
+    if (!folder) throw new ValidationError({ folder: ["Not found"] });
+
+    // Remove the folder reference from the user's folders array
+    const updatedUser = await User.findByIdAndUpdate(
+      session.user.id,
+      { $pull: { folders: folder._id } },
+      { new: true }
+    );
+
+    if (!updatedUser) throw new ValidationError({ user: ["User not found"] });
+
+    // If the folder is shared with other users, remove it from their folders array too
+    if (folder.sharedWith && folder.sharedWith.length > 0) {
+      await User.updateMany(
+        { _id: { $in: folder.sharedWith } },
+        { $pull: { folders: folder._id } }
+      );
+    }
+
+    // Finally delete the folder
+    await Folder.findByIdAndDelete(id);
+
+    return NextResponse.json({
+      success: true,
+      message: "Folder deleted successfully",
+      remainingFolders: updatedUser.folders,
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+}
