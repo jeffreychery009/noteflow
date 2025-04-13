@@ -7,6 +7,8 @@ import User from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
 import { ValidationError } from "@/lib/utils/http-errors";
 
+//
+// Create a new folder
 export async function POST(request: NextRequest) {
   try {
     await connectToDatabase();
