@@ -1,7 +1,7 @@
 import React from "react";
 
 import { auth } from "@/auth";
-import FolderButton from "@/components/buttons/AddFolder";
+import FolderButton from "@/components/buttons/folder-dialog";
 import FolderGrid from "@/components/layout/FolderGrid";
 import Search from "@/components/search/search";
 
