@@ -1,6 +1,15 @@
 import { MoreHorizontal } from "lucide-react";
 import React from "react";
 
+import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,23 +29,21 @@ interface DropdownOptionsProps {
 
 const DropdownOptions = ({ options }: DropdownOptionsProps) => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-        }}
-        className="rounded-md p-3 outline-none hover:bg-gray-100 dark:hover:bg-gray-800"
-      >
-        <MoreHorizontal className="size-4" />
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          onClick={() => {}}
+          className="rounded-md p-3 outline-none hover:bg-gray-100 dark:hover:bg-gray-800"
+          variant="ghost"
+        >
+          <MoreHorizontal className="size-4" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {options.map((option, index) => (
           <DropdownMenuItem
             key={index}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
+            onClick={() => {
               option.onClick();
             }}
           >
