@@ -6,6 +6,7 @@ import Folder from "@/lib/models/folder";
 import User from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
 import { ValidationError } from "@/lib/utils/http-errors";
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -42,6 +43,39 @@ export async function DELETE(
       success: true,
       message: "Folder deleted successfully",
       remainingFolders: updatedUser?.folders,
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectToDatabase();
+
+    const { id } = await params;
+    if (!id) throw new ValidationError({ folder: ["Not found"] });
+
+    const session = await auth();
+    if (!session?.user?.id)
+      throw new ValidationError({ auth: ["Unauthorized"] });
+
+    const { title } = await request.json();
+
+    const updatedFolder = await Folder.findByIdAndUpdate(
+      id,
+      { title },
+      { new: true }
+    );
+    if (!updatedFolder) throw new ValidationError({ folder: ["Not found"] });
+
+    return NextResponse.json({
+      success: true,
+      message: "Folder updated successfully",
+      folder: updatedFolder,
     });
   } catch (error) {
     return handleError(error);
