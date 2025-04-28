@@ -27,7 +27,7 @@ interface CreateFormProps {
 
 export default function CreateForm({ setIsDialogOpen }: CreateFormProps) {
   const [isCreating, setIsCreating] = useState(false);
-  const { createFolder } = useCreateFolder();
+  const { createFolder } = useCreateFolder(); // This is the hook that creates the folder
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({

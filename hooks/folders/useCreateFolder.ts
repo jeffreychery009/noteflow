@@ -1,34 +1,13 @@
 import { useSession } from "next-auth/react";
 import useSWR, { mutate as globalMutate } from "swr";
 
-type Folder = {
-  _id: string;
-  title: string;
-  itemCount: number;
-  createdAt: string;
-  updatedAt?: string;
-};
-
-interface FolderData {
-  success: boolean;
-  data: {
-    folders: Folder[];
-  };
-}
-
-const fetcher = (url: string) =>
-  fetch(url)
-    .then((res) => res.json())
-    .then((json) => {
-      if (!json.success) throw new Error(json.message || "API Error");
-      return json as FolderData;
-    });
+import { Folder, FolderData, folderFetcher } from "./types";
 
 export function useCreateFolder() {
   const { data: session } = useSession();
   const { data, mutate } = useSWR<FolderData>(
     session?.user?.id ? `/api/users/${session.user.id}` : null,
-    fetcher
+    folderFetcher
   );
 
   const createFolder = async (title: string) => {

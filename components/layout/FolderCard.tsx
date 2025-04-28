@@ -1,31 +1,71 @@
-import { Calendar, Folder, Pencil, Pin, Share, Trash } from "lucide-react";
-import React from "react";
+// components/FolderCard.tsx
+"use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Calendar, Folder, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import Link from "next/link";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useDeleteFolder } from "@/hooks/useDeleteFolder";
 import { formatDate } from "@/lib/formatDate";
+import { ROUTES } from "@/routes";
 
+import DialogBox from "../dialogbox/Dialog";
 import DropdownOptions from "../dropdown/DropdownOptions";
+import EditForm from "../forms/EditForm";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+const formSchema = z.object({
+  name: z.string().min(1, "Folder name is required"),
+});
 
 const FolderCard = ({ folder }: { folder: any }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const { deleteFolder } = useDeleteFolder();
   const { toast } = useToast();
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: folder.title,
+    },
+  });
+
   const handleDelete = async () => {
     try {
-      const success = await deleteFolder(folder._id);
-      if (success) {
+      const confirmToast = new Promise((resolve) => {
         toast({
-          title: "Success",
-          description: "Folder deleted successfully",
+          title: "Are you sure you want to delete this folder?",
+          description: "This action cannot be undone.",
+          action: (
+            <div className="flex justify-end gap-2">
+              <Button variant="destructive" onClick={() => resolve(true)}>
+                Delete
+              </Button>
+            </div>
+          ),
         });
-      } else {
-        toast({
-          title: "Error",
-          description: "Failed to delete folder",
-          variant: "destructive",
-        });
+      });
+
+      // Only proceed if user confirmed
+      const confirmed = await confirmToast;
+      if (confirmed) {
+        const success = await deleteFolder(folder._id);
+        if (success) {
+          toast({
+            title: "Success",
+            description: "Folder deleted successfully",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to delete folder",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
       toast({
@@ -40,17 +80,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
     {
       title: "Edit",
       icon: <Pencil className="size-4" />,
-      onClick: () => console.log("Edit clicked"),
-    },
-    {
-      title: "Share",
-      icon: <Share className="size-4" />,
-      onClick: () => console.log("Share clicked"),
-    },
-    {
-      title: "Pin",
-      icon: <Pin className="size-4" />,
-      onClick: () => console.log("Pin clicked"),
+      onClick: () => setIsEditOpen(true),
     },
     {
       title: "Delete",
@@ -60,42 +90,68 @@ const FolderCard = ({ folder }: { folder: any }) => {
   ];
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center">
-          <div className="mr-3 flex size-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900">
-            <Folder className="size-5 text-blue-600 dark:text-blue-300" />
-          </div>
-          <div>
-            <h3 className="font-medium">{folder.title}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {folder.itemCount} {folder.itemCount === 1 ? "item" : "items"}
-            </p>
-          </div>
+    <>
+      <div className="group relative rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+        {/* Dropdown Menu - Positioned Absolutely */}
+        <div className="absolute right-2 top-2 z-10">
+          <DropdownOptions options={options} />
         </div>
-        <DropdownOptions options={options} />
-      </div>
-      <div className="mt-4 flex items-center justify-between">
-        <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-          <Calendar className="mr-1 size-3" />
-          {formatDate(folder.updatedAt)}
-        </span>
 
-        {folder.sharedWith && (
-          <div className="flex space-x-2">
-            {folder.sharedWith.map((user: any) => (
-              <Avatar
-                key={user.id}
-                className="size-6 border-2 border-white dark:border-gray-900"
-              >
-                <AvatarImage src={user.image} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            ))}
+        <DialogBox
+          title="Edit Folder"
+          description="Edit the folder name"
+          isOpen={isEditOpen}
+          setIsOpen={setIsEditOpen}
+        >
+          <div className="mt-4">
+            <EditForm
+              setIsEditOpen={setIsEditOpen}
+              folderId={folder._id}
+              defaultValue={folder.title}
+            />
           </div>
-        )}
+        </DialogBox>
+
+        {/* Clickable Card Content */}
+        <Link href={ROUTES.FOLDER_DETAILS(folder._id)} className="block p-4">
+          <div className="flex items-start">
+            <div className="flex items-center">
+              <div className="mr-3 flex size-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900">
+                <Folder className="size-5 text-blue-600 dark:text-blue-300" />
+              </div>
+              <div>
+                <h3 className="font-medium">{folder.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {folder.itemCount} {folder.itemCount === 1 ? "item" : "items"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Info */}
+          <div className="mt-4 flex items-center justify-between">
+            <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <Calendar className="mr-1 size-3" />
+              {formatDate(folder.updatedAt)}
+            </span>
+
+            {folder.sharedWith && (
+              <div className="flex space-x-2">
+                {folder.sharedWith.map((user: any) => (
+                  <Avatar
+                    key={user.id}
+                    className="size-6 border-2 border-white dark:border-gray-900"
+                  >
+                    <AvatarImage src={user.image} alt={user.name} />
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                ))}
+              </div>
+            )}
+          </div>
+        </Link>
       </div>
-    </div>
+    </>
   );
 };
 
