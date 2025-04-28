@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
+import { useDeleteFolder } from "@/hooks/folders/useDeleteFolder";
 import { useToast } from "@/hooks/use-toast";
-import { useDeleteFolder } from "@/hooks/useDeleteFolder";
 import { formatDate } from "@/lib/formatDate";
 import { ROUTES } from "@/routes";
 
@@ -36,7 +36,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
 
   const handleDelete = async () => {
     try {
-      const confirmToast = new Promise((resolve) => {
+      const confirmToast = new Promise<boolean>((resolve) => {
         toast({
           title: "Are you sure you want to delete this folder?",
           description: "This action cannot be undone.",
@@ -53,25 +53,28 @@ const FolderCard = ({ folder }: { folder: any }) => {
       // Only proceed if user confirmed
       const confirmed = await confirmToast;
       if (confirmed) {
-        const success = await deleteFolder(folder._id);
-        if (success) {
+        const result = await deleteFolder(folder._id);
+
+        if (result.success) {
           toast({
+            className: "bg-green-500 text-white dark:bg-green-900",
+            variant: "default",
             title: "Success",
             description: "Folder deleted successfully",
           });
         } else {
           toast({
-            title: "Error",
-            description: "Failed to delete folder",
             variant: "destructive",
+            title: "Error",
+            description: result.error || "Failed to delete folder",
           });
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        title: "Error",
-        description: "Failed to delete folder",
         variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to delete folder",
       });
     }
   };
