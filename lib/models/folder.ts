@@ -10,30 +10,25 @@ export interface IFolder extends Document {
   updatedAt: Date;
 }
 
-export const folderSchema: Schema<IFolder> = new Schema({
-  title: {
-    type: String,
-    required: true,
+export const folderSchema: Schema<IFolder> = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    itemCount: {
+      type: Number,
+      default: 0,
+    },
+    sharedWith: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      required: true,
+      default: [],
+    },
   },
-  itemCount: {
-    type: Number,
-    default: 0,
-  },
-  sharedWith: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User",
-    required: true,
-    default: [],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { timestamps: true, strict: true }
+);
 
 const Folder: Model<IFolder> =
   mongoose.models.Folder || mongoose.model<IFolder>("Folder", folderSchema);
