@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 import { auth } from "@/auth";
 import connectToDatabase from "@/lib/db/mongodb";
@@ -6,6 +7,11 @@ import Folder from "@/lib/models/folder";
 import User from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
 import { ValidationError } from "@/lib/utils/http-errors";
+
+const patchFolderSchema = z.object({
+  title: z.string().min(1).optional(),
+  // Add other fields that can be patched in the future
+});
 
 export async function DELETE(
   request: NextRequest,
@@ -49,7 +55,7 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
+export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -64,12 +70,24 @@ export async function PUT(
       throw new ValidationError({ auth: ["Unauthorized"] });
 
     const { title } = await request.json();
+    const validated = patchFolderSchema.parse({ title });
 
     const updatedFolder = await Folder.findByIdAndUpdate(
       id,
-      { title },
-      { new: true }
+      {
+        $set: {
+          title,
+          updatedAt: new Date(),
+        },
+      },
+      {
+        new: true,
+        timestamps: true,
+      }
     );
+
+    console.log("Updated folder in DB:", updatedFolder);
+
     if (!updatedFolder) throw new ValidationError({ folder: ["Not found"] });
 
     return NextResponse.json({
