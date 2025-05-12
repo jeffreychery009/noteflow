@@ -1,10 +1,12 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
+import { INote } from "./note";
 import { IUser } from "./user";
 
 export interface IFolder extends Document {
   title: string;
   itemCount: number;
+  notes: INote[];
   sharedWith: IUser[];
   createdAt: Date;
   updatedAt: Date;
@@ -19,6 +21,7 @@ export const folderSchema: Schema<IFolder> = new Schema(
     itemCount: {
       type: Number,
       default: 0,
+      ref: "Note",
     },
     sharedWith: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -26,8 +29,23 @@ export const folderSchema: Schema<IFolder> = new Schema(
       required: true,
       default: [],
     },
+    notes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Note",
+      default: [],
+    },
   },
-  { timestamps: true, strict: true }
+  {
+    timestamps: true,
+    strict: true,
+    versionKey: false,
+    toJSON: {
+      transform: function (doc, ret) {
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
 );
 
 const Folder: Model<IFolder> =
