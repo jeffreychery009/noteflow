@@ -95,3 +95,10 @@ export const folderSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   sharedWith: z.array(z.string()).optional(),
 });
+
+export const noteSchema = z.object({
+  title: z.string().optional(),
+  content: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  sharedWith: z.array(z.string()).optional(),
+});
