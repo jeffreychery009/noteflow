@@ -19,6 +19,7 @@ export function useCreateFolder() {
       const optimisticFolder: Folder = {
         _id: Date.now().toString(),
         title,
+        notes: [],
         itemCount: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
