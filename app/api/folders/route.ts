@@ -34,10 +34,16 @@ export async function POST(request: NextRequest) {
       select: "title itemCount createdAt updatedAt",
     });
 
+    if (!user) {
+      throw new ValidationError({ user: ["User not found"] });
+    }
+
     return NextResponse.json(
       {
         success: true,
-        data: { folder, user },
+        data: {
+          folders: user.folders,
+        },
       },
       { status: 201 }
     );
