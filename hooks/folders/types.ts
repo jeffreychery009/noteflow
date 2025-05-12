@@ -1,6 +1,7 @@
 export type Folder = {
   _id: string;
   title: string;
+  notes: string[];
   itemCount: number;
   createdAt: string;
   updatedAt?: string;
