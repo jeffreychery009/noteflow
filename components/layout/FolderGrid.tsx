@@ -28,11 +28,17 @@ const FolderGrid = () => {
   return (
     <div className="flex-1 overflow-auto p-4 sm:p-6">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {data.data?.folders.map((folder: any) => (
-          <div key={folder._id} className="relative">
-            <FolderCard folder={folder} />
+        {data.data?.folders.length > 0 ? (
+          data.data?.folders.map((folder: any) => (
+            <div key={folder._id} className="relative">
+              <FolderCard folder={folder} />
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-lg text-gray-500">
+            No folders found! Create one now!
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
