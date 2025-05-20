@@ -11,7 +11,6 @@ import Search from "@/components/search/search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FolderData, folderFetcher } from "@/hooks/folders/types";
-import { useNotes } from "@/hooks/notes/useNotes";
 import { useToast } from "@/hooks/use-toast";
 
 interface FolderContentProps {
@@ -20,11 +19,10 @@ interface FolderContentProps {
 
 function FolderContent({ params }: FolderContentProps) {
   const { id } = React.use(params);
-  const { data: session, status } = useSession();
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { toast } = useToast();
 
-  const { notes, isLoading: notesLoading, createNote } = useNotes(id);
   const { data, error, isLoading } = useSWR<FolderData>(
     status === "authenticated" ? `/api/users/${session.user.id}` : null,
     folderFetcher
@@ -34,19 +32,11 @@ function FolderContent({ params }: FolderContentProps) {
 
   const handleCreateNote = async () => {
     try {
-      const result = await createNote("Untitled", "");
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      toast({
-        title: "Success",
-        description: "Note created successfully",
-      });
+      router.push(`/folders/${id}/new`);
     } catch (error) {
       toast({
         title: "Error",
-        description:
-          error instanceof Error ? error.message : "Failed to create note",
+        description: "Failed to create note",
         variant: "destructive",
       });
     }
@@ -105,10 +95,10 @@ function FolderContent({ params }: FolderContentProps) {
             <Button
               onClick={handleCreateNote}
               size="sm"
-              className="primary-gradient flex-1 rounded-full sm:flex-none"
+              className="primary-gradient rounded-full"
             >
-              <Plus className="size-4 sm:mr-2" />
-              <span className="hidden font-light sm:inline">New Note</span>
+              <Plus className="mr-2 size-4" />
+              New Note
             </Button>
           </div>
         </div>
@@ -116,20 +106,9 @@ function FolderContent({ params }: FolderContentProps) {
 
       {/* Notes content */}
       <div className="flex-1 p-4">
-        {notesLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
-          </div>
-        ) : notes.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <p className="text-gray-500">No notes in this folder</p>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Note cards will go here */}
-          </div>
-        )}
+        <div className="flex h-full items-center justify-center">
+          <p className="text-gray-500">No notes in this folder</p>
+        </div>
       </div>
     </div>
   );
