@@ -8,13 +8,17 @@ import FolderCard from "./FolderCard";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const FolderGrid = () => {
+const FolderGrid = ({ query }: { query?: string }) => {
   const { data: session, status } = useSession();
 
   // Using relative URL (/api/...) automatically prepends the current domain
   const { data, error } = useSWR(
     session?.user?.id ? `/api/users/${session.user.id}` : null,
     fetcher
+  );
+
+  const filteredFolders = data?.data?.folders.filter((folder: any) =>
+    folder.title.toLowerCase().includes(query?.toLowerCase() || "")
   );
 
   // Handle loading states
@@ -26,8 +30,8 @@ const FolderGrid = () => {
   return (
     <div className="flex-1 overflow-auto p-4 sm:p-6">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {data.data?.folders.length > 0 ? (
-          data.data?.folders.map((folder: any) => (
+        {filteredFolders.length > 0 ? (
+          filteredFolders.map((folder: any) => (
             <div key={folder._id} className="relative">
               <FolderCard folder={folder} />
             </div>
