@@ -72,6 +72,11 @@ export async function PATCH(
     const { title } = await request.json();
     const validated = patchFolderSchema.parse({ title });
 
+    // First find the existing folder to preserve its fields
+    const existingFolder = await Folder.findById(id);
+    if (!existingFolder) throw new ValidationError({ folder: ["Not found"] });
+
+    // Update only the title while preserving all other fields
     const updatedFolder = await Folder.findByIdAndUpdate(
       id,
       {
@@ -84,16 +89,22 @@ export async function PATCH(
         new: true,
         timestamps: true,
       }
-    );
-
-    console.log("Updated folder in DB:", updatedFolder);
+    ).populate("notes");
 
     if (!updatedFolder) throw new ValidationError({ folder: ["Not found"] });
 
+    // Return the complete folder data
     return NextResponse.json({
       success: true,
       message: "Folder updated successfully",
-      folder: updatedFolder,
+      folder: {
+        _id: updatedFolder._id,
+        title: updatedFolder.title,
+        itemCount: updatedFolder.itemCount,
+        notes: updatedFolder.notes,
+        createdAt: updatedFolder.createdAt,
+        updatedAt: updatedFolder.updatedAt,
+      },
     });
   } catch (error) {
     return handleError(error);
