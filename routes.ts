@@ -6,6 +6,7 @@ export const ROUTES = {
   FOLDERS: "/folders",
   FOLDER_DETAILS: (id: string) => `/folders/${id}`,
   NOTES: "/notes",
+  NOTE_DETAILS: (id: string) => `/notes/${id}`,
   SHARED_WITH_ME: "/shared-with-me",
   FAVORITES: "/favorites",
   TRASH: "/trash",
