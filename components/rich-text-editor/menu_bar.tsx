@@ -39,7 +39,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
   };
 
   return (
-    <div className="flex items-center gap-1 border-b border-gray-200 bg-white p-2 dark:border-gray-800 dark:bg-gray-950">
+    <div className="flex items-center gap-1 bg-white p-2 dark:border-gray-800 dark:bg-gray-950">
       {/* Text Style Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
