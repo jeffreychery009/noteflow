@@ -21,7 +21,6 @@ export const folderSchema: Schema<IFolder> = new Schema(
     itemCount: {
       type: Number,
       default: 0,
-      ref: "Note",
     },
     sharedWith: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -41,6 +40,7 @@ export const folderSchema: Schema<IFolder> = new Schema(
     versionKey: false,
     toJSON: {
       transform: function (doc, ret) {
+        ret._id = ret._id.toString();
         delete ret.__v;
         return ret;
       },
