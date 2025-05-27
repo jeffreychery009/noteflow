@@ -7,12 +7,12 @@ import { useSession } from "next-auth/react";
 import React, { Suspense } from "react";
 import useSWR from "swr";
 
+import NotesGrid from "@/components/layout/NotesGrid";
 import Search from "@/components/search/search";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FolderData, folderFetcher } from "@/hooks/folders/types";
 import { useToast } from "@/hooks/use-toast";
-
 interface FolderContentProps {
   params: Promise<{ id: string }>;
 }
@@ -30,13 +30,13 @@ function FolderContent({ params }: FolderContentProps) {
 
   const folder = data?.data?.folders.find((f) => f._id === id);
 
-  const handleCreateNote = async () => {
+  const handleCreateNote = () => {
     try {
-      router.push(`/folders/${id}/new`);
+      router.push(`/new?folderId=${id}`);
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to create note",
+        description: "Failed to navigate to note editor",
         variant: "destructive",
       });
     }
@@ -105,9 +105,9 @@ function FolderContent({ params }: FolderContentProps) {
       </div>
 
       {/* Notes content */}
-      <div className="flex-1 p-4">
-        <div className="flex h-full items-center justify-center">
-          <p className="text-gray-500">No notes in this folder</p>
+      <div className="flex-1 p-2">
+        <div className="flex">
+          <NotesGrid folderId={id} />
         </div>
       </div>
     </div>
