@@ -2,7 +2,7 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { Suspense } from "react";
 import useSWR from "swr";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FolderData, folderFetcher } from "@/hooks/folders/types";
 import { useToast } from "@/hooks/use-toast";
+
 interface FolderContentProps {
   params: Promise<{ id: string }>;
 }
@@ -20,8 +21,10 @@ interface FolderContentProps {
 function FolderContent({ params }: FolderContentProps) {
   const { id } = React.use(params);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const { toast } = useToast();
+  const query = searchParams.get("query") || "";
 
   const { data, error, isLoading } = useSWR<FolderData>(
     status === "authenticated" ? `/api/users/${session.user.id}` : null,
@@ -89,7 +92,7 @@ function FolderContent({ params }: FolderContentProps) {
       <div className="border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950">
         <div className="flex items-center gap-3">
           <div className="relative mt-2 flex-1">
-            <Search />
+            <Search query={query} />
           </div>
           <div className="flex items-center">
             <Button
@@ -107,7 +110,7 @@ function FolderContent({ params }: FolderContentProps) {
       {/* Notes content */}
       <div className="flex-1 p-2">
         <div className="flex">
-          <NotesGrid folderId={id} />
+          <NotesGrid folderId={id} query={query} />
         </div>
       </div>
     </div>

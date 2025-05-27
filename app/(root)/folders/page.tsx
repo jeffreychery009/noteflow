@@ -45,7 +45,7 @@ const Folders = async ({
           </div>
         </div>
       </div>
-      <FolderGrid />
+      <FolderGrid query={query} />
     </div>
   );
 };
