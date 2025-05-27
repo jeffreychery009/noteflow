@@ -4,8 +4,6 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import useSWR from "swr";
 
-import { ROUTES } from "@/routes";
-
 import FolderCard from "./FolderCard";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
