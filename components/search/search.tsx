@@ -1,8 +1,8 @@
 "use client";
 
 import { SearchIcon, X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 import { ROUTES } from "@/routes";
 
@@ -11,6 +11,7 @@ import { Input } from "../ui/input";
 
 const Search = ({ query: initialQuery }: { query?: string }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery || "");
 
   const handleSearch = (value: string) => {
@@ -19,12 +20,25 @@ const Search = ({ query: initialQuery }: { query?: string }) => {
     if (value) {
       searchParams.set("query", value);
     }
-    router.push(`${ROUTES.FOLDERS}?${searchParams.toString()}`);
+
+    // If we're in a folder, maintain the current path
+    if (pathname.startsWith("/folders/")) {
+      router.push(`${pathname}?${searchParams.toString()}`);
+    } else {
+      // Otherwise, go to the folders page (default behavior)
+      router.push(`${ROUTES.FOLDERS}?${searchParams.toString()}`);
+    }
   };
 
   const clearSearch = () => {
     setQuery("");
-    router.push(ROUTES.FOLDERS);
+    // If we're in a folder, maintain the current path
+    if (pathname.startsWith("/folders/")) {
+      router.push(pathname);
+    } else {
+      // Otherwise, go to the folders page (default behavior)
+      router.push(ROUTES.FOLDERS);
+    }
   };
 
   return (
