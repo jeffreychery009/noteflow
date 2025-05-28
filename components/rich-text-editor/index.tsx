@@ -121,7 +121,7 @@ const RichTextEditor = () => {
         className: "bg-green-500 text-white",
       });
 
-      router.push(`/folders/${folderId}`);
+      router.push(`/folders/${folderId}`); // TODO: Redirect to the note
     } catch (error) {
       console.error("Error saving note:", error);
       toast({
@@ -154,6 +154,7 @@ const RichTextEditor = () => {
   }
 
   return (
+    // TODO: Styling the editor to be full screen and for mobile
     <div className="mx-auto max-w-4xl p-6">
       <div className="mb-6 flex items-center justify-between">
         <Button
