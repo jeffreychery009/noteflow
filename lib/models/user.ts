@@ -16,6 +16,13 @@ export interface IUser extends Document {
     theme: string;
     syncMode: "online" | "offline" | "hybrid";
   };
+  friends: mongoose.Types.ObjectId[];
+  friendRequests: Array<{
+    from: mongoose.Types.ObjectId;
+    status: "pending" | "accepted" | "rejected";
+    createdAt: Date;
+    updatedAt: Date;
+  }>;
 }
 
 // Create the schema
@@ -61,6 +68,28 @@ const userSchema: Schema<IUser> = new Schema(
         required: true,
       },
     ],
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    friendRequests: [
+      {
+        from: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: ["pending", "accepted", "rejected"],
+          default: "pending",
+          index: true,
+        },
+        _id: false,
+      },
+    ],
     preferences: {
       theme: {
         type: String,
@@ -80,6 +109,12 @@ const userSchema: Schema<IUser> = new Schema(
     toObject: { virtuals: true },
   }
 );
+
+// Add compound index to prevent duplicate friend requests
+userSchema.index({ "friendRequests.from": 1, _id: 1 }, { unique: true });
+
+// Add compound index to prevent duplicate friends
+userSchema.index({ friends: 1, _id: 1 }, { unique: true });
 
 // Create the model
 const User: Model<IUser> =
