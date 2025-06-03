@@ -1,12 +1,11 @@
+// ===== FRIEND REQUEST API =====
 // POST /api/friends/request
-// This route is used to send a friend request to a user
-// Default status is pending
-
+import { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 import connectToDatabase from "@/lib/db/mongodb";
-import User from "@/lib/models/user";
+import User, { IUser } from "@/lib/models/user";
 import { handleError } from "@/lib/utils/error-handler";
 import { ValidationError } from "@/lib/utils/http-errors";
 
@@ -18,13 +17,22 @@ export async function POST(request: NextRequest) {
     }
 
     const senderId = session.user.id;
-    const { receiverId } = await request.json();
+    const { receiverUsername } = await request.json();
 
-    if (!receiverId) {
-      throw new ValidationError({ receiverId: ["Receiver ID is required"] });
+    if (!receiverUsername) {
+      throw new ValidationError({ receiverUsername: ["Username is required"] });
     }
 
     await connectToDatabase();
+
+    // Find the receiver by username
+    const receiver = await User.findOne({ username: receiverUsername }).lean();
+    if (!receiver) {
+      throw new ValidationError({ receiver: ["User not found"] });
+    }
+
+    const receiverId = receiver._id.toString();
+    const receiverObjectId = new Types.ObjectId(receiverId);
 
     // Prevent self-friending
     if (senderId === receiverId) {
@@ -33,16 +41,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Check if the receiver exists
-    const receiver = await User.findById(receiverId);
-    if (!receiver) {
-      throw new ValidationError({ receiver: ["User not found"] });
-    }
-
     // Check if they are already friends
     const areFriends = await User.findOne({
       _id: senderId,
-      friends: receiverId,
+      friends: receiverObjectId,
     });
 
     if (areFriends) {
@@ -53,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     // Check for existing friend requests in either direction
     const existingRequest = await User.findOne({
-      _id: receiverId,
+      _id: receiverObjectId,
       "friendRequests.from": senderId,
     });
 
@@ -66,7 +68,7 @@ export async function POST(request: NextRequest) {
     // Check if receiver has already sent a request
     const reverseRequest = await User.findOne({
       _id: senderId,
-      "friendRequests.from": receiverId,
+      "friendRequests.from": receiverObjectId,
     });
 
     if (reverseRequest) {
@@ -77,7 +79,7 @@ export async function POST(request: NextRequest) {
 
     // Create the friend request
     const updatedReceiver = await User.findByIdAndUpdate(
-      receiverId,
+      receiverObjectId,
       {
         $push: {
           friendRequests: {
@@ -99,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Friend request sent successfully",
+      message: `Friend request sent to ${receiverUsername}`,
     });
   } catch (error) {
     return handleError(error);
