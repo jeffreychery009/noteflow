@@ -2,7 +2,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar, Folder, MoreHorizontal, Pencil, Trash } from "lucide-react";
+import {
+  Calendar,
+  Folder,
+  MoreHorizontal,
+  Pencil,
+  Share,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,13 +24,16 @@ import { ROUTES } from "@/routes";
 import DialogBox from "../dialogbox/Dialog";
 import DropdownOptions from "../dropdown/DropdownOptions";
 import EditForm from "../forms/EditForm";
+import SearchModal from "../modal/searchModal";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 const formSchema = z.object({
   name: z.string().min(1, "Folder name is required"),
 });
 
 const FolderCard = ({ folder }: { folder: any }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const { deleteFolder } = useDeleteFolder();
   const { toast } = useToast();
 
@@ -90,6 +100,11 @@ const FolderCard = ({ folder }: { folder: any }) => {
       icon: <Trash className="size-4" />,
       onClick: handleDelete,
     },
+    {
+      title: "Share",
+      icon: <Share className="size-4" />,
+      onClick: () => setIsShareOpen(true),
+    },
   ];
 
   return (
@@ -114,6 +129,15 @@ const FolderCard = ({ folder }: { folder: any }) => {
             />
           </div>
         </DialogBox>
+
+        {isShareOpen && (
+          <SearchModal
+            itemType="folder"
+            itemName={folder.title}
+            open={isShareOpen}
+            onOpenChange={setIsShareOpen}
+          />
+        )}
 
         {/* Clickable Card Content */}
         <Link href={ROUTES.FOLDER_DETAILS(folder._id)} className="block p-4">
