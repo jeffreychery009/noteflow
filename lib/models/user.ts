@@ -16,6 +16,7 @@ export interface IUser extends Document {
     theme: string;
     syncMode: "online" | "offline" | "hybrid";
   };
+  isOnline: boolean;
   friends: mongoose.Types.ObjectId[];
   friendRequests: Array<{
     from: mongoose.Types.ObjectId;
@@ -101,6 +102,10 @@ const userSchema: Schema<IUser> = new Schema(
         enum: ["online", "offline", "hybrid"],
         default: "online",
       },
+    },
+    isOnline: {
+      type: Boolean,
+      default: false,
     },
   },
   {
