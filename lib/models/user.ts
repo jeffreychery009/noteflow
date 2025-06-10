@@ -17,6 +17,7 @@ export interface IUser extends Document {
     syncMode: "online" | "offline" | "hybrid";
   };
   isOnline: boolean;
+  lastSeen: Date;
   friends: mongoose.Types.ObjectId[];
   friendRequests: Array<{
     from: mongoose.Types.ObjectId;
@@ -107,6 +108,10 @@ const userSchema: Schema<IUser> = new Schema(
       type: Boolean,
       default: false,
     },
+    lastSeen: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: true,
@@ -117,6 +122,9 @@ const userSchema: Schema<IUser> = new Schema(
 
 // Add compound index to prevent duplicate friend requests
 userSchema.index({ "friendRequests.from": 1, _id: 1 }, { unique: true });
+
+// Compound index for presence status
+userSchema.index({ lastSeen: -1, isOnline: 1 });
 
 // Add compound index to prevent duplicate friends
 userSchema.index({ friends: 1, _id: 1 }, { unique: true });
