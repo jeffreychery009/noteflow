@@ -99,8 +99,10 @@ const TabsComp = ({
                 />
                 <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              {user.isOnline && (
+              {user.isOnline ? (
                 <div className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-green-500 dark:border-gray-900" />
+              ) : (
+                <div className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-red-500 dark:border-gray-900" />
               )}
             </div>
             <div className="min-w-0 flex-1">
@@ -113,9 +115,13 @@ const TabsComp = ({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {user.isOnline && (
+            {user.isOnline ? (
               <Badge variant="outline" className="rounded-full text-xs">
                 Online
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="rounded-full text-xs">
+                Offline
               </Badge>
             )}
             {showFriendshipActions ? (
