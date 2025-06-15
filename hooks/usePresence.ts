@@ -1,25 +1,39 @@
 // hooks/usePresence.ts
 import { useEffect } from "react";
 
+import { auth } from "@/auth";
+
 export const usePresence = () => {
   useEffect(() => {
     console.log("🟢 usePresence started - new instance");
 
     // Update presence status every 30 seconds
-    const updatePresence = async () => {
+    const updatePresence = async (forceStatus?: boolean) => {
       try {
         console.log("📡 Sending presence update...");
+        const session = await auth();
+        // Use forceStatus if provided, otherwise use session status
+        const status =
+          typeof forceStatus === "boolean" ? forceStatus : !!session;
+
+        console.log("Sending status update:", status);
+
         const response = await fetch("/api/presence/update", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
         });
 
         console.log("📊 Response status:", response.status);
+        console.log("📊 Auth status:", status);
 
-        // Check for both 401 and 400
-        if (response.status === 401 || response.status === 400) {
-          console.log("🔴 Auth failed - returning false to stop polling");
+        if (!response.ok) {
+          console.error("Failed to update presence:", await response.text());
           return false;
         }
+
         console.log("✅ Presence updated successfully");
         return true;
       } catch (error) {
@@ -71,6 +85,12 @@ export const usePresence = () => {
         clearInterval(interval);
         interval = null;
       }
+
+      // Force offline status on cleanup
+      console.log("📤 Sending offline status");
+      updatePresence(false).catch((error) =>
+        console.error("Failed to send offline status:", error)
+      );
     };
-  }, []);
+  }, []); // No dependencies needed
 };

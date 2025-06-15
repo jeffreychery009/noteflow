@@ -17,14 +17,31 @@ export async function POST(request: NextRequest) {
       throw new ValidationError({ auth: ["Unauthorized"] });
     }
 
+    // Get status from request body, handle empty bodies gracefully
+    let status = false;
+    try {
+      const body = await request.json();
+      status = !!body.status; // Convert to boolean
+    } catch (e) {
+      console.log("No request body or invalid JSON, defaulting to offline");
+      status = false;
+    }
+
+    console.log("Updating presence status:", {
+      userId: session.user.id,
+      status,
+    });
+
     await connectToDatabase();
 
     // Update user's presence status
     const user = await User.findOneAndUpdate(
       { _id: session?.user?.id },
       {
-        isOnline: true,
-        lastSeen: Date.now(),
+        $set: {
+          isOnline: status,
+          lastSeen: new Date(),
+        },
       },
       { new: true }
     );
@@ -34,6 +51,11 @@ export async function POST(request: NextRequest) {
       throw new NotFoundError("User");
     }
 
+    console.log("Updated user status:", {
+      userId: user._id,
+      isOnline: user.isOnline,
+    });
+
     // Return the updated user
     return NextResponse.json({
       success: true,
@@ -41,6 +63,7 @@ export async function POST(request: NextRequest) {
       user,
     });
   } catch (error) {
+    console.error("Presence update error:", error);
     return handleError(error);
   }
 }
