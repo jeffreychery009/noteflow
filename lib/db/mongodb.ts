@@ -11,7 +11,7 @@ let cached: MongooseCache = {
 };
 
 if (!process.env.MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
+  console.log("MONGODB_URI is not defined");
 }
 
 async function connectToDatabase(): Promise<Mongoose> {
