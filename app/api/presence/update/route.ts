@@ -12,58 +12,25 @@ import { NotFoundError, ValidationError } from "@/lib/utils/http-errors";
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-
-    if (!session?.user?.id) {
-      throw new ValidationError({ auth: ["Unauthorized"] });
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get status from request body, handle empty bodies gracefully
-    let status = false;
-    try {
-      const body = await request.json();
-      status = !!body.status; // Convert to boolean
-    } catch (e) {
-      console.log("No request body or invalid JSON, defaulting to offline");
-      status = false;
-    }
-
-    console.log("Updating presence status:", {
-      userId: session.user.id,
-      status,
-    });
-
+    const { status } = await request.json();
     await connectToDatabase();
 
-    // Update user's presence status
-    const user = await User.findOneAndUpdate(
-      { _id: session?.user?.id },
-      {
-        $set: {
-          isOnline: status,
-          lastSeen: new Date(),
-        },
-      },
+    await User.findOneAndUpdate(
+      { email: session.user.email },
+      { isOnline: status },
       { new: true }
     );
 
-    // If user is not found, throw a custom NotFoundError
-    if (!user) {
-      throw new NotFoundError("User");
-    }
-
-    console.log("Updated user status:", {
-      userId: user._id,
-      isOnline: user.isOnline,
-    });
-
-    // Return the updated user
-    return NextResponse.json({
-      success: true,
-      message: "Presence status updated",
-      user,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Presence update error:", error);
-    return handleError(error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
