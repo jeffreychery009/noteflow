@@ -10,6 +10,7 @@ export interface IUser extends Document {
     providerAccountId: string;
   }>;
   folders: mongoose.Types.ObjectId[];
+  notes: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
   preferences: {
@@ -67,7 +68,12 @@ const userSchema: Schema<IUser> = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Folder",
-        required: true,
+      },
+    ],
+    notes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Note",
       },
     ],
     friends: [
