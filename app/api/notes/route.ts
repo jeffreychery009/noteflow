@@ -20,10 +20,10 @@ export async function GET(req: Request) {
     const user = await User.findOne({ email: session.user.email });
     if (!user) throw new NotFoundError("User");
 
-    const notes = await Note.find({ userId: user._id });
+    const notes = await Note.find({ owner: user._id });
     if (!notes) throw new NotFoundError("Notes");
 
-    return NextResponse.json(notes);
+    return NextResponse.json({ success: true, data: notes });
   } catch (error) {
     return handleError(error);
   }
@@ -64,6 +64,15 @@ export async function POST(req: Request) {
       folderId,
       {
         $inc: { itemCount: 1 },
+        $push: { notes: note._id },
+      },
+      { new: true }
+    );
+
+    // Add note to user's notes array
+    await User.findByIdAndUpdate(
+      user._id,
+      {
         $push: { notes: note._id },
       },
       { new: true }

@@ -21,7 +21,7 @@ export const navLinks = [
       //   icon: Home,
       // },
       {
-        label: "Recent Notes",
+        label: "Notes",
         href: ROUTES.NOTES,
         icon: FileText,
       },

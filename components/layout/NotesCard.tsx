@@ -1,3 +1,5 @@
+"use client";
+
 import { Calendar, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
