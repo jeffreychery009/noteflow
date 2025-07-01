@@ -3,6 +3,20 @@ import useSWR, { mutate as globalMutate } from "swr";
 
 import { Note, NoteData, noteFetcher } from "./types";
 
+export function useAllNotes() {
+  const { data: session } = useSession();
+  const { data, mutate } = useSWR<NoteData>(
+    session?.user?.id ? "/api/notes" : null,
+    noteFetcher
+  );
+
+  return {
+    notes: data?.data || [],
+    isLoading: !data && session?.user?.id,
+    mutate,
+  };
+}
+
 export function useNotes(folderId: string) {
   const { data: session } = useSession();
   const { data, mutate } = useSWR<NoteData>(
