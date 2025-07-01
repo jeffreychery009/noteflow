@@ -12,4 +12,5 @@ export const ROUTES = {
   TRASH: "/trash",
   PROFILE: "/profile",
   SETTINGS: "/settings",
+  FRIENDS: "/friends",
 };
