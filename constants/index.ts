@@ -15,11 +15,11 @@ export const navLinks = [
   {
     subTitle: "Main",
     links: [
-      {
-        label: "Home",
-        href: ROUTES.HOME_PAGE,
-        icon: Home,
-      },
+      // {
+      //   label: "Home",
+      //   href: ROUTES.HOME_PAGE,
+      //   icon: Home,
+      // },
       {
         label: "Recent Notes",
         href: ROUTES.NOTES,
@@ -43,6 +43,11 @@ export const navLinks = [
       {
         label: "Shared with me",
         href: ROUTES.SHARED_WITH_ME,
+        icon: Users,
+      },
+      {
+        label: "Friends",
+        href: ROUTES.FRIENDS,
         icon: Users,
       },
       {
