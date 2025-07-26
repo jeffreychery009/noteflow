@@ -2,7 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import React, { useState } from "react";
 import {
   DefaultValues,
   FieldValues,
@@ -29,7 +31,9 @@ interface AuthFormProps<T extends FieldValues> {
   defaultValues: T;
   schema: z.ZodSchema<T>;
   formType: "SIGN_IN" | "SIGN_UP";
-  onSubmit: (data: T) => Promise<{ success: boolean; data: T }>;
+  onSubmit?: (
+    data: T
+  ) => Promise<{ success: boolean; data: T; error?: string }>;
 }
 
 const AuthForm = <T extends FieldValues>({
@@ -38,18 +42,78 @@ const AuthForm = <T extends FieldValues>({
   formType,
   onSubmit,
 }: AuthFormProps<T>) => {
+  const router = useRouter();
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async () => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      if (formType === "SIGN_IN") {
+        // Handle sign in with credentials
+        const result = await signIn("credentials", {
+          username: data.email || data.username, // Support both email and username
+          password: data.password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          setError("Invalid credentials");
+          return;
+        }
+
+        if (result?.ok) {
+          router.push("/notes");
+        }
+      } else {
+        // Handle sign up
+        if (onSubmit) {
+          const response = await onSubmit(data);
+          if (response.success) {
+            // After successful signup, sign in the user
+            const signInResult = await signIn("credentials", {
+              username: data.email || data.username,
+              password: data.password,
+              redirect: false,
+            });
+
+            if (signInResult?.ok) {
+              router.push("/notes");
+            } else {
+              setError(
+                "Signup successful but sign-in failed. Please try signing in manually."
+              );
+            }
+          } else {
+            // Handle signup error
+            setError(response.error || "Signup failed. Please try again.");
+          }
+        }
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const buttonText = formType === "SIGN_IN" ? "Sign In" : "Sign Up";
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        {error && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
+            {error}
+          </div>
+        )}
         {Object.keys(defaultValues).map((field) => (
           <FormField
             key={field}
@@ -90,9 +154,9 @@ const AuthForm = <T extends FieldValues>({
         <Button
           className="w-full rounded-full bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
           type="submit"
-          disabled={form.formState.isSubmitting}
+          disabled={isLoading}
         >
-          {form.formState.isSubmitting
+          {isLoading
             ? buttonText === "Sign In"
               ? "Signing In..."
               : "Signing Up..."
