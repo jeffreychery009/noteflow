@@ -1,5 +1,7 @@
+import bcrypt from "bcryptjs";
 import { Types } from "mongoose";
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
@@ -17,6 +19,67 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
       clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    }),
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "johndoe1234",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        // Authorize user with credentials
+        try {
+          await connectToDatabase();
+
+          if (!credentials?.username || !credentials?.password) {
+            return null;
+          }
+
+          // Find user by username or email
+          const user = (await User.findOne({
+            $or: [
+              { username: credentials.username },
+              { email: credentials.username },
+            ],
+          })) as (IUser & { _id: Types.ObjectId }) | null;
+
+          if (!user) {
+            return null;
+          }
+
+          // Check password
+          if (
+            user.password &&
+            typeof user.password === "string" &&
+            typeof credentials.password === "string"
+          ) {
+            const isValid = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+            if (!isValid) {
+              return null;
+            }
+          } else {
+            // For users without password (OAuth users), deny credentials login
+            return null;
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            image: user.avatar,
+          } as any;
+        } catch (error) {
+          console.error("Credentials auth error:", error);
+          return null;
+        }
+      },
     }),
   ],
   callbacks: {
