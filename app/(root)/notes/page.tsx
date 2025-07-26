@@ -1,10 +1,40 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+
 import NotesCard from "@/components/layout/NotesCard";
 import { useAllNotes } from "@/hooks/notes/useNotes";
 
 export default function NotesPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const { notes, isLoading } = useAllNotes();
+
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
+  // Show loading while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="p-6">
+        <h1 className="mb-6 text-2xl font-bold">Your Notes</h1>
+        <div className="flex h-64 items-center justify-center text-gray-500">
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated (will redirect)
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   if (isLoading) {
     return (

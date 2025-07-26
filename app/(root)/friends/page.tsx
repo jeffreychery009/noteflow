@@ -1,9 +1,39 @@
-import React from "react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import FriendsTabs from "@/components/friends/FriendsTabs";
 import Search from "@/components/search/search";
 
 const FriendsPage = () => {
+  const { status } = useSession();
+  const router = useRouter();
+
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
+  // Show loading while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="mx-auto w-full max-w-5xl px-4 py-6">
+        <div className="flex h-64 items-center justify-center text-gray-500">
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated (will redirect)
+  if (status === "unauthenticated") {
+    return null;
+  }
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6">
       <h1 className="mb-6 flex items-center gap-2 text-2xl font-bold">

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
@@ -11,6 +12,12 @@ const Folders = async ({
   searchParams: Promise<{ query?: string }>;
 }) => {
   const session = await auth();
+
+  // Redirect unauthenticated users to sign-in
+  if (!session?.user?.id) {
+    redirect("/sign-in");
+  }
+
   console.log(session);
   const query = (await searchParams).query;
 
