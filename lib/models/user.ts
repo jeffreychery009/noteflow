@@ -5,6 +5,7 @@ export interface IUser extends Document {
   username: string;
   name: string;
   avatar?: string;
+  password?: string; // Optional for OAuth users
   providers: Array<{
     provider: string;
     providerAccountId: string;
@@ -50,6 +51,9 @@ const userSchema: Schema<IUser> = new Schema(
       trim: true,
     },
     avatar: {
+      type: String,
+    },
+    password: {
       type: String,
     },
     providers: [
