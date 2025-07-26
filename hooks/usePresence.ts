@@ -20,7 +20,7 @@ export const usePresence = () => {
 
         // If the response is not ok, log the error
         if (!response.ok) {
-          console.error("Failed to update presence:", await response.text());
+          console.log("Failed to update presence:", await response.text());
           return false;
         }
 
