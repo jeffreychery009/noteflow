@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Folder, LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import React, { useMemo } from "react";
@@ -22,17 +22,20 @@ const Title = () => {
     }
   );
 
-  const pageLabel = useMemo(() => {
+  const { pageLabel, pageIcon } = useMemo(() => {
     // Check if we're in a folder route
     const folderMatch = pathname.match(/\/folders\/([^/]+)/);
     if (folderMatch) {
       const folderId = folderMatch[1];
       const folder = data?.data?.folders.find((f) => f._id === folderId);
       if (folder) {
-        return folder.title;
+        return { pageLabel: folder.title, pageIcon: Folder };
       }
       // Only show loading if we're authenticated and waiting for data
-      return status === "authenticated" ? "Loading..." : "";
+      return {
+        pageLabel: status === "authenticated" ? "Loading..." : "",
+        pageIcon: Folder,
+      };
     }
 
     // Flatten all links into a single array
@@ -41,16 +44,22 @@ const Title = () => {
     const currentRoute = allLinks.find((link) => link.href === pathname);
 
     if (currentRoute?.label === "Home") {
-      return "";
+      return { pageLabel: "", pageIcon: null };
     }
-    // Return the label or a default value
-    return currentRoute?.label || "Dashboard";
-  }, [pathname, data?.data?.folders, status]);
+    // Return the label and icon or default values
+    return {
+      pageLabel: currentRoute?.label || "Dashboard",
+      pageIcon: currentRoute?.icon || Folder,
+    };
+  }, [pathname, data?.data?.folders, status]) as {
+    pageLabel: string;
+    pageIcon: LucideIcon | null;
+  };
 
   const isInFolderRoute = pathname.startsWith("/folders/");
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       {isInFolderRoute && (
         <button
           key="back-button"
@@ -60,9 +69,19 @@ const Title = () => {
           <ChevronLeft className="size-5" />
         </button>
       )}
-      <h1 key="title" className="flex items-center text-xl">
-        {pageLabel}
-      </h1>
+      <div className="flex items-center gap-3">
+        {pageIcon && (
+          <div className="flex size-10 items-center justify-center rounded-xl bg-purple-500 shadow-sm">
+            {React.createElement(pageIcon, { className: "size-5 text-white" })}
+          </div>
+        )}
+        <h1
+          key="title"
+          className="text-2xl font-bold text-gray-900 dark:text-white"
+        >
+          {pageLabel}
+        </h1>
+      </div>
     </div>
   );
 };
