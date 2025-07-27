@@ -40,16 +40,16 @@ export const navLinks = [
         href: ROUTES.FOLDERS,
         icon: Folder,
       },
-      {
-        label: "Shared with me",
-        href: ROUTES.SHARED_WITH_ME,
-        icon: Users,
-      },
-      {
-        label: "Friends",
-        href: ROUTES.FRIENDS,
-        icon: Users,
-      },
+      // {
+      //   label: "Shared with me",
+      //   href: ROUTES.SHARED_WITH_ME,
+      //   icon: Users,
+      // },
+      // {
+      //   label: "Friends",
+      //   href: ROUTES.FRIENDS,
+      //   icon: Users,
+      // },
       {
         label: "Favorites",
         href: ROUTES.FAVORITES,
