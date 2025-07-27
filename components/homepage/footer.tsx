@@ -1,227 +1,35 @@
-import { Twitter, Instagram } from "lucide-react";
-import Link from "next/link";
+"use client";
 
-export function Footer() {
+import Image from "next/image";
+
+export default function Footer() {
   return (
-    <footer className="border-t bg-gray-50 py-16 dark:border-gray-800 dark:bg-black">
-      <div className="container">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          <div>
-            <h3 className="mb-4 font-medium">Products</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Integrations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Customer stories
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Desktop apps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Mobile apps
-                </Link>
-              </li>
-            </ul>
+    <footer className="relative z-10 mt-32 border-t border-gray-200 bg-gray-50/80 dark:border-gray-800 dark:bg-gray-800/80">
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="text-center">
+          <div className="mb-6">
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <Image
+                src="/new-veltnote.png"
+                alt="veltnote-logo"
+                width={500}
+                height={500}
+                className="size-20 rounded-lg object-cover object-top"
+                style={{ objectPosition: "center 25%" }}
+              />
+              <span className="text-xl font-bold text-gray-900 dark:text-white">
+                veltnote
+              </span>
+            </div>
+            <p className="mx-auto max-w-md text-sm text-gray-600 dark:text-gray-300">
+              The simplest way to organize your thoughts and stay productive.
+            </p>
           </div>
 
-          <div>
-            <h3 className="mb-4 font-medium">Resources</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Guide & tutorials
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Help center
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Community
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  What&apos;s new
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Privacy & terms
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-medium">Company</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Media kit
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Contact support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-medium">Developers</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  API reference
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  API status
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                >
-                  API changelog
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-16 flex flex-col items-center justify-between md:flex-row">
-          <p className="mb-4 text-sm text-gray-500 md:mb-0 dark:text-gray-400">
-            © 2022 Nulis. All rights reserved
-          </p>
-
-          <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-            >
-              <Twitter className="size-5" />
-              <span className="sr-only">Twitter</span>
-            </Link>
-
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-            >
-              <div className="flex size-5 items-center justify-center">
-                <span className="text-sm font-bold">n.</span>
-              </div>
-              <span className="sr-only">Nulis</span>
-            </Link>
-
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-            >
-              <Instagram className="size-5" />
-              <span className="sr-only">Instagram</span>
-            </Link>
+          <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              © 2024 veltnote. All rights reserved.
+            </p>
           </div>
         </div>
       </div>
