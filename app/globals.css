@@ -72,7 +72,7 @@
     color: #2e58e1;
   }
   .primary-gradient {
-    background: #12a7fb;
+    background: linear-gradient(to right, #b667f1, #6d28d9);
   }
 
   .bgwhite_dark900 {
