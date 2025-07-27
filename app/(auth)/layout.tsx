@@ -15,31 +15,28 @@ export default function AuthLayout({
   const formType = pathname.includes("sign-up") ? "SIGN_UP" : "SIGN_IN";
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="container flex h-16 items-center justify-between py-4">
+    <div className="mt-20 flex min-h-screen flex-col">
+      <header className="container flex h-16 items-center justify-center py-4">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold">n.</span>
+            <span className="text-center text-2xl font-bold">veltnote</span>
           </Link>
-        </div>
-        <div>
-          <ThemeToggle />
         </div>
       </header>
 
-      <main className="flex flex-1 items-center justify-center py-12">
-        <div className="mx-auto w-full max-w-md">
-          <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <main className="px-6 py-8">
+        <div className="mx-auto max-w-md">
+          <div className="rounded-2xl border border-gray-200 bg-white/80 p-8 shadow-xl backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/80">
             <div className="mb-8 text-center">
-              <h1 className="mb-2 text-3xl font-bold">
+              <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
                 {formType === "SIGN_UP"
                   ? "Get Started with Noteflow"
-                  : "Welcome Back"}
+                  : "Welcome back"}
               </h1>
               <p className="text-gray-600 dark:text-gray-300">
                 {formType === "SIGN_UP"
                   ? "Join Noteflow today and start organizing your notes"
-                  : "Login to your account to continue"}
+                  : "Sign in to your account to continue"}
               </p>
             </div>
             {children}
