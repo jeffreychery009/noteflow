@@ -152,7 +152,7 @@ const AuthForm = <T extends FieldValues>({
           />
         ))}
         <Button
-          className="w-full rounded-full bg-gradient-to-r from-[#12A7FB] to-[#7DC5ED] text-white"
+          className="w-full rounded-lg bg-gradient-to-r from-[#b667f1] to-[#6d28d9] text-white"
           type="submit"
           disabled={isLoading}
         >
@@ -165,11 +165,20 @@ const AuthForm = <T extends FieldValues>({
         {formType === "SIGN_IN" ? (
           <p className="text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <Link href={ROUTES.SIGN_UP}>Sign Up</Link>
+            <Link href={ROUTES.SIGN_UP}>
+              <span className="font-medium text-purple-600 hover:text-purple-900">
+                Sign Up
+              </span>
+            </Link>
           </p>
         ) : (
           <p className="text-center text-sm text-gray-500">
-            Already have an account? <Link href={ROUTES.SIGN_IN}>Sign In</Link>
+            Already have an account?{" "}
+            <Link href={ROUTES.SIGN_IN}>
+              <span className="font-medium text-purple-600 hover:text-purple-900">
+                Sign In
+              </span>
+            </Link>
           </p>
         )}
       </form>
