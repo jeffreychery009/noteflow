@@ -8,7 +8,7 @@ import React, { Suspense } from "react";
 import useSWR from "swr";
 
 import NotesGrid from "@/components/layout/NotesGrid";
-import Search from "@/components/search/search";
+import SearchActionBar from "@/components/layout/SearchActionBar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FolderData, folderFetcher } from "@/hooks/folders/types";
@@ -89,21 +89,26 @@ function FolderContent({ params }: FolderContentProps) {
   return (
     <div className="flex h-full flex-col">
       {/* Header with search and actions */}
+      <SearchActionBar
+        placeholder="Search notes..."
+        showNewFolderButton={false}
+        showFilterButton={false}
+        showSortButton={false}
+        onSearchChange={(value) => {
+          // Handle search change
+          console.log("Search:", value);
+        }}
+      />
       <div className="border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950">
-        <div className="flex items-center gap-3">
-          <div className="relative mt-2 flex-1">
-            <Search query={query} />
-          </div>
-          <div className="flex items-center">
-            <Button
-              onClick={handleCreateNote}
-              size="sm"
-              className="primary-gradient rounded-full"
-            >
-              <Plus className="mr-2 size-4" />
-              New Note
-            </Button>
-          </div>
+        <div className="flex items-center justify-end">
+          <Button
+            onClick={handleCreateNote}
+            size="sm"
+            className="h-12 rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg hover:from-purple-600 hover:to-violet-700"
+          >
+            <Plus className="mr-2 size-4" />
+            New Note
+          </Button>
         </div>
       </div>
 
