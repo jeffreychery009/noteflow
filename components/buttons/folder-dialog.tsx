@@ -22,7 +22,7 @@ const FolderButton = () => {
     <div>
       <Button
         onClick={handleOpenDialog}
-        className="primary-gradient flex-1 rounded-full sm:flex-none"
+        className="h-12 flex-1 rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg hover:from-purple-600 hover:to-violet-700 sm:flex-none"
         size="sm"
       >
         <Plus className="size-4 sm:mr-2" />
