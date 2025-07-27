@@ -1,4 +1,4 @@
-import { Plus, Search } from "lucide-react";
+import { FolderPlus, Plus, Search } from "lucide-react";
 import React from "react";
 
 import UserInfo from "./UserInfo";
@@ -24,10 +24,10 @@ const Sidebar = ({ className }: SidebarProps) => {
       {/* New folder button */}
       <div className="p-6">
         <Button
-          className="w-full justify-center bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg transition-all duration-200 hover:from-purple-600 hover:to-violet-700 hover:shadow-xl"
+          className="w-full justify-center rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 font-light text-white shadow-lg transition-all duration-200 hover:from-purple-600 hover:to-violet-700 hover:shadow-xl"
           size="default"
         >
-          <Plus className="mr-2 size-4" />
+          <FolderPlus className="mr-2 size-4" />
           New Folder
         </Button>
       </div>
