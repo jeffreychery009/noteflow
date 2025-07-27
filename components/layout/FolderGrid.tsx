@@ -29,7 +29,7 @@ const FolderGrid = ({ query }: { query?: string }) => {
 
   return (
     <div className="flex-1 overflow-auto p-4 sm:p-6">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredFolders.length > 0 ? (
           filteredFolders.map((folder: any) => (
             <div key={folder._id} className="relative">
