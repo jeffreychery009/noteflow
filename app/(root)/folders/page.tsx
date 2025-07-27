@@ -1,57 +1,61 @@
-import { redirect } from "next/navigation";
-import React from "react";
+"use client";
 
-import { auth } from "@/auth";
-import FolderButton from "@/components/buttons/folder-dialog";
+"use client";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+
 import FolderGrid from "@/components/layout/FolderGrid";
-import Search from "@/components/search/search";
+import SearchActionBar from "@/components/layout/SearchActionBar";
 
-const Folders = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ query?: string }>;
-}) => {
-  const session = await auth();
+const Folders = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("query") || "");
 
   // Redirect unauthenticated users to sign-in
-  if (!session?.user?.id) {
-    redirect("/sign-in");
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/sign-in");
+    }
+  }, [status, router]);
+
+  // Show loading while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="p-6">
+        <div className="flex h-64 items-center justify-center text-gray-500">
+          Loading...
+        </div>
+      </div>
+    );
   }
 
-  console.log(session);
-  const query = (await searchParams).query;
+  // Don't render anything if not authenticated (will redirect)
+  if (status === "unauthenticated") {
+    return null;
+  }
 
-  const addFolder = async () => {
-    try {
-      const response = await fetch("/api/folders", {
-        method: "POST",
-        body: JSON.stringify({ title: "New Folder" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        console.log(data);
-      }
-    } catch (error) {
-      console.error(error);
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
+    // Update URL with search query
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set("query", value);
+    } else {
+      params.delete("query");
     }
+    router.push(`/folders?${params.toString()}`);
   };
 
   return (
     <div>
-      <div className="border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950">
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative mt-2 flex-1">
-            <Search query={query} />
-          </div>
-          <div className="mt-2 flex gap-2">
-            <FolderButton />
-          </div>
-        </div>
-      </div>
+      <SearchActionBar
+        placeholder="Search folders..."
+        onSearchChange={handleSearchChange}
+      />
       <FolderGrid query={query} />
     </div>
   );
