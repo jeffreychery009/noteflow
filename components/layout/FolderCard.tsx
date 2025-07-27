@@ -109,9 +109,9 @@ const FolderCard = ({ folder }: { folder: any }) => {
 
   return (
     <>
-      <div className="group relative rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
+      <div className="relative rounded-3xl border border-gray-100 bg-white p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
         {/* Dropdown Menu - Positioned Absolutely */}
-        <div className="absolute right-2 top-2 z-10">
+        <div className="absolute right-4 top-4 z-10">
           <DropdownOptions options={options} />
         </div>
 
@@ -140,14 +140,16 @@ const FolderCard = ({ folder }: { folder: any }) => {
         )}
 
         {/* Clickable Card Content */}
-        <Link href={ROUTES.FOLDER_DETAILS(folder._id)} className="block p-4">
-          <div className="flex items-start">
+        <Link href={ROUTES.FOLDER_DETAILS(folder._id)} className="block">
+          <div className="flex items-start justify-between">
             <div className="flex items-center">
-              <div className="mr-3 flex size-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900">
-                <Folder className="size-5 text-blue-600 dark:text-blue-300" />
+              <div className="mr-4 flex size-12 items-center justify-center rounded-xl bg-purple-500">
+                <Folder className="size-6 text-white" />
               </div>
               <div>
-                <h3 className="font-medium">{folder.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {folder.title}
+                </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {folder.itemCount} {folder.itemCount === 1 ? "item" : "items"}
                 </p>
@@ -156,23 +158,32 @@ const FolderCard = ({ folder }: { folder: any }) => {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-4 flex items-center justify-between">
-            <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-              <Calendar className="mr-1 size-3" />
+          <div className="mt-6 flex items-center justify-between">
+            <span className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+              <Calendar className="mr-2 size-4" />
               {formatDate(folder.updatedAt)}
             </span>
 
-            {folder.sharedWith && (
-              <div className="flex space-x-2">
-                {folder.sharedWith.map((user: any) => (
-                  <Avatar
-                    key={user.id}
-                    className="size-6 border-2 border-white dark:border-gray-900"
-                  >
-                    <AvatarImage src={user.image} alt={user.name} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                ))}
+            {folder.sharedWith && folder.sharedWith.length > 0 ? (
+              <div className="flex -space-x-2">
+                {folder.sharedWith
+                  .slice(0, 3)
+                  .map((user: any, index: number) => (
+                    <Avatar
+                      key={user.id}
+                      className="size-8 border-2 border-white dark:border-gray-900"
+                    >
+                      <AvatarImage src={user.image} alt={user.name} />
+                      <AvatarFallback className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                        {user.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  ))}
+              </div>
+            ) : (
+              <div className="flex -space-x-2">
+                {/* <div className="size-8 rounded-full border-2 border-purple-200 bg-gray-100 dark:border-purple-800 dark:bg-gray-800"></div>
+                <div className="size-8 rounded-full border-2 border-purple-200 bg-gray-100 dark:border-purple-800 dark:bg-gray-800"></div> */}
               </div>
             )}
           </div>
