@@ -13,6 +13,7 @@ interface SearchActionBarProps {
   showNewFolderButton?: boolean;
   showFilterButton?: boolean;
   showSortButton?: boolean;
+  customNewButton?: React.ReactNode;
 }
 
 const SearchActionBar = ({
@@ -21,6 +22,7 @@ const SearchActionBar = ({
   showNewFolderButton = true,
   showFilterButton = true,
   showSortButton = true,
+  customNewButton,
 }: SearchActionBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -63,7 +65,9 @@ const SearchActionBar = ({
               <span className="hidden font-medium sm:inline">Sort</span>
             </Button>
           )}
-          {showNewFolderButton && <FolderButton />}
+          {customNewButton
+            ? customNewButton
+            : showNewFolderButton && <FolderButton />}
         </div>
       </div>
     </div>
