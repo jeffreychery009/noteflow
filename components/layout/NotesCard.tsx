@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, MoreHorizontal, Trash } from "lucide-react";
+import { Calendar, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -20,6 +20,10 @@ const NotesCard = ({ note, onDelete }: NotesCardProps) => {
     router.push(`/new?noteId=${note._id}&folderId=${note.folder}`);
   };
 
+  const handleDropdownClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   const options = [
     {
       title: "Delete",
@@ -29,26 +33,44 @@ const NotesCard = ({ note, onDelete }: NotesCardProps) => {
   ];
 
   return (
-    <div>
-      <div className="min-h-[200px] cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white p-4 transition-shadow duration-300 hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-start justify-between">
-          <h3 className="font-medium">{note.title}</h3>
+    <div
+      className="cursor-pointer rounded-3xl border border-gray-100 bg-white p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900"
+      onClick={handleClick}
+    >
+      <div className="mb-4 flex items-start justify-between">
+        <h3 className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white">
+          {note.title}
+        </h3>
+        <div onClick={handleDropdownClick}>
           <DropdownOptions options={options} />
         </div>
-        <div onClick={handleClick}>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: note.content,
-            }}
-            className="prose dark:prose-invert mt-2 line-clamp-3 text-sm text-gray-600 dark:text-gray-300"
-          />
-          <div className="mt-4 flex items-center justify-between">
-            <span className="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
-              <Calendar className="mr-1 size-4" />
-              {formatDate(note.createdAt)}
+      </div>
+
+      <div
+        dangerouslySetInnerHTML={{
+          __html: note.content,
+        }}
+        className="mb-6 line-clamp-4 leading-relaxed text-gray-600 dark:text-gray-300"
+      />
+
+      {note.tags && note.tags.length > 0 && (
+        <div className="mb-6 flex flex-wrap gap-2">
+          {note.tags.map((tag: string, index: number) => (
+            <span
+              key={index}
+              className="rounded-full border border-purple-200 bg-gradient-to-r from-purple-100 to-violet-100 px-3 py-1 text-xs text-purple-700 dark:border-purple-700 dark:from-purple-900/30 dark:to-violet-900/30 dark:text-purple-300"
+            >
+              {tag}
             </span>
-          </div>
+          ))}
         </div>
+      )}
+
+      <div className="flex items-center justify-between">
+        <span className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+          <Calendar className="mr-2 size-4" />
+          {formatDate(note.createdAt)}
+        </span>
       </div>
     </div>
   );
