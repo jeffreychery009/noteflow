@@ -59,7 +59,6 @@ export default function NotesPage() {
         }}
       />
       <div className="flex-1 overflow-auto p-6">
-        <h1 className="mb-6 text-2xl font-bold">Your Notes</h1>
         {notes.length === 0 ? (
           <div className="flex h-64 items-center justify-center text-gray-500">
             No notes found.

@@ -102,7 +102,7 @@ function FolderContent({ params }: FolderContentProps) {
           <Button
             onClick={handleCreateNote}
             size="sm"
-            className="h-12 rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg hover:from-purple-600 hover:to-violet-700"
+            className="h-12 rounded-xl bg-gradient-to-r from-purple-500 to-violet-600 font-light text-white shadow-lg hover:from-purple-600 hover:to-violet-700"
           >
             <Plus className="mr-2 size-4" />
             New Note
