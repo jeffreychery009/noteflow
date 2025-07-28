@@ -58,14 +58,14 @@ export default function NotesPage() {
           console.log("Search:", value);
         }}
       />
-      <div className="p-6">
+      <div className="flex-1 overflow-auto p-6">
         <h1 className="mb-6 text-2xl font-bold">Your Notes</h1>
         {notes.length === 0 ? (
           <div className="flex h-64 items-center justify-center text-gray-500">
             No notes found.
           </div>
         ) : (
-          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {notes.map((note) => (
               <NotesCard key={note._id} note={note} onDelete={() => {}} />
             ))}
