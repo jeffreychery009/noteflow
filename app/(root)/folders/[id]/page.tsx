@@ -88,19 +88,17 @@ function FolderContent({ params }: FolderContentProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header with search and actions */}
+      {/* Search and action bar */}
       <SearchActionBar
         placeholder="Search notes..."
         showNewFolderButton={false}
-        showFilterButton={false}
-        showSortButton={false}
+        showFilterButton={true}
+        showSortButton={true}
         onSearchChange={(value) => {
           // Handle search change
           console.log("Search:", value);
         }}
-      />
-      <div className="border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-950">
-        <div className="flex items-center justify-end">
+        customNewButton={
           <Button
             onClick={handleCreateNote}
             size="sm"
@@ -109,14 +107,12 @@ function FolderContent({ params }: FolderContentProps) {
             <Plus className="mr-2 size-4" />
             New Note
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Notes content */}
-      <div className="flex-1 p-2">
-        <div className="flex">
-          <NotesGrid folderId={id} query={query} />
-        </div>
+      <div className="flex-1 overflow-auto p-6">
+        <NotesGrid folderId={id} query={query} />
       </div>
     </div>
   );
