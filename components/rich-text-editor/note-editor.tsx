@@ -73,13 +73,18 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror {
-          color: rgb(229 231 235);
+          color: rgb(255 255 255);
         }
 
         .ProseMirror p {
           margin-bottom: 1.2rem;
           line-height: 1.3;
           font-size: 16px;
+          color: rgb(55 65 81);
+        }
+
+        .dark .ProseMirror p {
+          color: rgb(255 255 255);
         }
 
         .ProseMirror ul,
@@ -97,6 +102,11 @@ export function NoteEditor({
           margin-bottom: 0.1rem;
           line-height: 1.3;
           padding-left: 0;
+          color: rgb(55 65 81);
+        }
+
+        .dark .ProseMirror ul li {
+          color: rgb(255 255 255);
         }
 
         .ProseMirror ul li::before {
@@ -109,12 +119,17 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror ul li::before {
-          color: rgb(156 163 175);
+          color: rgb(255 255 255);
         }
 
         .ProseMirror ol li {
           margin-bottom: 0.4rem;
           line-height: 1.3;
+          color: rgb(55 65 81);
+        }
+
+        .dark .ProseMirror ol li {
+          color: rgb(255 255 255);
         }
 
         .ProseMirror h1,
@@ -132,7 +147,7 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror h1 {
-          color: rgb(249 250 251);
+          color: rgb(255 255 255);
         }
 
         .ProseMirror h2 {
@@ -141,7 +156,7 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror h2 {
-          color: rgb(243 244 246);
+          color: rgb(255 255 255);
         }
 
         .ProseMirror h3 {
@@ -150,7 +165,7 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror h3 {
-          color: rgb(229 231 235);
+          color: rgb(255 255 255);
         }
 
         .ProseMirror a {
@@ -184,7 +199,7 @@ export function NoteEditor({
 
         .dark .ProseMirror blockquote {
           border-left-color: rgb(196 181 253);
-          color: rgb(156 163 175);
+          color: rgb(255 255 255);
           background-color: rgb(30 41 59);
         }
 
@@ -225,7 +240,7 @@ export function NoteEditor({
         }
 
         .dark .ProseMirror p.is-editor-empty:first-child::before {
-          color: rgb(107 114 128);
+          color: rgb(156 163 175);
         }
 
         .ProseMirror:focus {
