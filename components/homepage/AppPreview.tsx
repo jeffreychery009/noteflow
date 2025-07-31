@@ -31,7 +31,7 @@ export default function AppPreview() {
   return (
     <div className="relative mx-auto mb-32 max-w-4xl" ref={appPreviewRef}>
       <div
-        className={`overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl transition-all duration-1000 hover:scale-105 dark:border-gray-800 dark:bg-[#141142] dark:bg-gray-900${isVisible ? "animate-bounce-in" : "translate-y-16 opacity-0"}`}
+        className={`overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl transition-all duration-1000 hover:scale-105 dark:border-gray-800 dark:bg-[#212121] dark:bg-gray-900${isVisible ? "animate-bounce-in" : "translate-y-16 opacity-0"}`}
       >
         <div className="p-8">
           <div className="mb-8 flex items-center justify-between">
