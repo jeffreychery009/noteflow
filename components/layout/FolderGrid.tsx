@@ -28,7 +28,7 @@ const FolderGrid = ({ query }: { query?: string }) => {
   if (!data) return <div>Loading folders...</div>;
 
   return (
-    <div className="flex-1 overflow-auto p-4 sm:p-6">
+    <div className="flex-1 overflow-auto p-4 sm:p-6 dark:bg-[#151D2C] dark:text-white">
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredFolders.length > 0 ? (
           filteredFolders.map((folder: any) => (

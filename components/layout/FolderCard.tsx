@@ -109,7 +109,7 @@ const FolderCard = ({ folder }: { folder: any }) => {
 
   return (
     <>
-      <div className="relative rounded-3xl border border-gray-100 bg-white p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-800 dark:bg-gray-900">
+      <div className="relative rounded-3xl border border-gray-100 bg-white p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-lg dark:border-gray-800 dark:bg-[#101827]">
         {/* Dropdown Menu - Positioned Absolutely */}
         <div className="absolute right-4 top-4 z-10">
           <DropdownOptions options={options} />
