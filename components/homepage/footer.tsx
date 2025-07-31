@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 mt-32 border-t border-gray-200 bg-gray-50/80 dark:border-gray-800 dark:bg-gray-800/80">
+    <footer className="relative z-10 mt-32 border-t border-gray-200 bg-white/80 dark:border-gray-700 dark:bg-transparent">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="text-center">
           <div className="mb-6">
@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
+          <div className="border-t border-gray-200 pt-6 dark:border-gray-700">
             <p className="text-sm text-gray-600 dark:text-gray-300">
               © 2024 veltnote. All rights reserved.
             </p>
