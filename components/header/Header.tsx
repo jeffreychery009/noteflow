@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 const Header = async () => {
   const session = await auth();
   return (
-    <header className="sticky top-0 z-50 flex justify-between border-b border-gray-200 bg-white px-4 dark:border-gray-800 dark:bg-gray-950">
+    <header className="sticky top-0 z-50 flex justify-between border-b border-gray-200 bg-white px-4 dark:border-[#2E3747] dark:bg-[#121A28]">
       <div className="flex h-20 items-center">
         <Title />
         <WelcomeMessage />

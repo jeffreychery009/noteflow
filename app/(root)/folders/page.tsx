@@ -51,7 +51,7 @@ const Folders = () => {
   };
 
   return (
-    <div>
+    <div className="dark:bg-[#151D2C]">
       <SearchActionBar
         placeholder="Search folders..."
         onSearchChange={handleSearchChange}
