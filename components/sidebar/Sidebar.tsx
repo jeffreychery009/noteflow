@@ -14,10 +14,10 @@ interface SidebarProps {
 const Sidebar = ({ className }: SidebarProps) => {
   return (
     <div
-      className={`flex size-full flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ${className}`}
+      className={`flex size-full flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#141C2B] dark:via-[#1F2937] dark:to-[#151D2C] ${className} dark:border-[#26303F]`}
     >
       {/* User profile */}
-      <div className="border-b border-gray-100 p-6 dark:border-gray-800">
+      <div className="border-b border-gray-100 p-6 dark:border-[#26303F]">
         <UserInfo />
       </div>
 

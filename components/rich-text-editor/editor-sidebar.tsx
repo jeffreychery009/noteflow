@@ -1,9 +1,10 @@
 import { Search, FolderPlus } from "lucide-react";
 import NextLink from "next/link";
 
-import { NewFolderDialog, ThemeToggle } from "./placeholder-components";
+import { NewFolderDialog } from "./placeholder-components";
 import { navLinks } from "../../constants";
 import UserInfoClient from "../sidebar/UserInfoClient";
+import { ThemeToggle } from "../toggles/theme-toggle";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -17,7 +18,7 @@ export function EditorSidebar({
 }) {
   return (
     <div
-      className={`flex size-full flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950 ${className}`}
+      className={`flex size-full flex-col border-l border-gray-200 bg-gradient-to-br from-blue-50 via-white to-indigo-50 shadow-lg dark:border-gray-700 dark:from-[#141C2B] dark:via-[#1F2937] dark:to-[#151D2C] ${className}`}
     >
       {/* User profile */}
       <div className="border-b border-gray-100 p-6 dark:border-gray-800">
@@ -81,7 +82,7 @@ export function EditorSidebar({
       </nav>
 
       {/* Theme toggle */}
-      <div className="border-t border-gray-100 p-6 dark:border-gray-800">
+      <div className="border-t border-gray-100 p-6 dark:border-[#26303F]">
         <div className="flex justify-center">
           <ThemeToggle />
         </div>
