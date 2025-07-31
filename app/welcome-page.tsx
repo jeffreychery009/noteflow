@@ -5,7 +5,7 @@ import AppPreview from "@/components/homepage/AppPreview";
 import BenefitsSection from "@/components/homepage/BenefitsSection";
 import CallToAction from "@/components/homepage/CallToAction";
 import FeaturesSection from "@/components/homepage/FeaturesSection";
-import Footer from "@/components/homepage/Footer";
+import Footer from "@/components/homepage/footer";
 import Header from "@/components/homepage/Header";
 import HeroSection from "@/components/homepage/HeroSection";
 
