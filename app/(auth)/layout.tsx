@@ -15,8 +15,8 @@ export default function AuthLayout({
   const formType = pathname.includes("sign-up") ? "SIGN_UP" : "SIGN_IN";
 
   return (
-    <div className="mt-20 flex min-h-screen flex-col">
-      <header className="container flex h-16 items-center justify-center py-4">
+    <div className="flex min-h-screen flex-col dark:bg-gradient-to-br dark:from-gray-900 dark:via-purple-950 dark:to-gray-900">
+      <header className="container mt-20 flex h-16 items-center justify-center py-4">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center">
             <span className="text-center text-2xl font-bold">veltnote</span>
