@@ -65,9 +65,10 @@ const SearchActionBar = ({
               <span className="hidden font-medium sm:inline">Sort</span>
             </Button>
           )}
-          {customNewButton
-            ? customNewButton
-            : showNewFolderButton && <FolderButton />}
+          {customNewButton && (
+            <div className="flex-1 sm:flex-none">{customNewButton}</div>
+          )}
+          {!customNewButton && showNewFolderButton && <FolderButton />}
         </div>
       </div>
     </div>
