@@ -43,16 +43,35 @@ export async function POST(req: Request) {
 
     const { title, content, tags, folderId } = await req.json();
 
-    if (!folderId) {
-      return NextResponse.json(
-        { error: "Folder ID is required" },
-        { status: 400 }
-      );
+    // Handle the case where folderId is not provided (only create General folder if no folderId at all)
+    let targetFolderId = folderId;
+    if (!targetFolderId) {
+      // Try to find an existing default folder for this user
+      let defaultFolder = await Folder.findOne({
+        title: "General",
+        _id: { $in: user.folders },
+      });
+
+      if (!defaultFolder) {
+        // Create a default folder if none exists
+        defaultFolder = await Folder.create({ title: "General" });
+
+        // Add the default folder to user's folders array
+        await User.findByIdAndUpdate(
+          user._id,
+          {
+            $push: { folders: defaultFolder._id },
+          },
+          { new: true }
+        );
+      }
+
+      targetFolderId = defaultFolder._id;
     }
 
     const note = await Note.create({
       owner: user._id,
-      folder: folderId,
+      folder: targetFolderId,
       title: title || "Untitled Note",
       content: content || "<p>Hello World!</p>",
       tags: tags || [],
@@ -61,7 +80,7 @@ export async function POST(req: Request) {
     });
 
     await Folder.findByIdAndUpdate(
-      folderId,
+      targetFolderId,
       {
         $inc: { itemCount: 1 },
         $push: { notes: note._id },
