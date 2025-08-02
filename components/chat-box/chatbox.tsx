@@ -58,17 +58,19 @@ const Chatbox = ({ isOpen, setIsOpen }: ChatboxProps) => {
 
   return (
     <div
-      className={`fixed bottom-20 right-6 z-50 w-full max-w-sm rounded-2xl border border-gray-200 bg-white shadow-2xl transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-900 ${
+      className={`fixed bottom-20 right-6 z-50 w-full max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-900 ${
         isOpen
           ? "translate-y-0 scale-100 opacity-100"
           : "pointer-events-none translate-y-4 scale-95 opacity-0"
       }`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between rounded-t-2xl bg-gradient-to-r from-purple-500 to-pink-500 p-4">
+      <div className="flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <div className="flex items-center gap-2">
           <MessageCircle className="size-5 text-white" />
-          <span className="font-medium text-white"> Juno AI Assistant</span>
+          <span className="text-sm font-light text-white">
+            Juno AI Assistant
+          </span>
         </div>
         <Button
           variant="ghost"
@@ -81,7 +83,7 @@ const Chatbox = ({ isOpen, setIsOpen }: ChatboxProps) => {
       </div>
 
       {/* Messages */}
-      <div className="h-80 space-y-3 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-800">
+      <div className="h-96 space-y-3 overflow-y-auto p-4 dark:bg-gray-900">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -91,7 +93,7 @@ const Chatbox = ({ isOpen, setIsOpen }: ChatboxProps) => {
               className={`max-w-[80%] rounded-2xl px-4 py-2 transition-all duration-200 ${
                 message.type === "user"
                   ? "bg-purple-500 text-white"
-                  : "bg-white text-gray-900 dark:bg-gray-700 dark:text-white"
+                  : "bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white"
               }`}
             >
               {message.content}
@@ -101,7 +103,7 @@ const Chatbox = ({ isOpen, setIsOpen }: ChatboxProps) => {
       </div>
 
       {/* Input */}
-      <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+      <div className="rounded-b-2xl border-t border-gray-200 p-4 dark:border-gray-700 dark:bg-gray-900">
         <div className="flex gap-2">
           <input
             type="text"
