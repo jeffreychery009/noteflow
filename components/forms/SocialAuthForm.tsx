@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import React from "react";
 
+import { useWindowSize } from "@/hooks/use-window-size";
 import { ROUTES } from "@/routes";
 
 import { Button } from "../ui/button";
@@ -19,6 +20,8 @@ const SocialAuthForm = () => {
     }
   };
 
+  const windowSize = useWindowSize();
+
   return (
     <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
       <Button
@@ -26,14 +29,22 @@ const SocialAuthForm = () => {
         variant="outline"
         className="rounded-full"
       >
-        <span className="font-normal">Log in with Github</span>
+        {windowSize.width < 768 ? (
+          <span className="text-xs">Github</span>
+        ) : (
+          <span className="font-normal">Log in with Github</span>
+        )}
       </Button>
       <Button
         onClick={() => handleSignIn("google")}
         variant="outline"
         className="rounded-full"
       >
-        <span className="font-normal">Log in with Google</span>
+        {windowSize.width < 768 ? (
+          <span className="text-xs">Google</span>
+        ) : (
+          <span className="font-normal">Log in with Google</span>
+        )}
       </Button>
     </div>
   );
