@@ -1,3 +1,7 @@
+import { X, Send, MessageCircle, Sparkles } from "lucide-react";
+import { useState } from "react";
+
+import Chatbox from "../chat-box/chatbox";
 import { Button } from "../ui/button";
 
 export const AIAssistantButton = ({
@@ -7,26 +11,63 @@ export const AIAssistantButton = ({
   editor: string;
   onInsert: (text: string) => void;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      type: "ai",
+      content:
+        "Hi! I'm your AI assistant. How can I help you with your notes today?",
+    },
+  ]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+
+    // Add user message
+    const userMessage = {
+      id: messages.length + 1,
+      type: "user" as const,
+      content: inputValue,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue("");
+
+    // Simulate AI response
+    setTimeout(() => {
+      const aiMessage = {
+        id: messages.length + 2,
+        type: "ai" as const,
+        content: `I understand you said: ${inputValue}. Here's how I can help...`,
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+    }, 1000);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
-    <Button
-      size="lg"
-      className="fixed bottom-6 right-6 flex size-14 items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-violet-600 p-0 shadow-lg transition-all duration-200 hover:from-purple-600 hover:to-violet-700 hover:shadow-xl"
-      onClick={() => onInsert("\n\nAI generated content here...")}
-    >
-      <svg
-        className="size-6 text-white"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 10V3L4 14h7v7l9-11h-7z"
-        />
-      </svg>
-    </Button>
+    <>
+      <Chatbox isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      {/* Toggle Button - Only show when chat is closed */}
+      {!isOpen && (
+        <Button
+          size="lg"
+          className="fixed bottom-6 right-6 z-40 flex size-14 items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-violet-600 p-0 shadow-lg transition-all duration-200 hover:from-purple-600 hover:to-violet-700 hover:shadow-xl"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <Sparkles className="size-6 text-white" />
+        </Button>
+      )}
+    </>
   );
 };
 
